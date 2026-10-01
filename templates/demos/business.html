@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ProBusiness | Business Website Demo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #172033;
+            background: #f5f8ff;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 7%;
+
+            background: rgba(255,255,255,0.96);
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo span {
+            color: #7c3aed;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+
+            margin-left: 25px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            min-height: 680px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 90px 7%;
+
+            position: relative;
+
+            background-image:
+
+                linear-gradient(
+                    90deg,
+                    rgba(10,25,60,0.88),
+                    rgba(10,25,60,0.60),
+                    rgba(10,25,60,0.25)
+                ),
+
+                url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .hero-content {
+
+            max-width: 720px;
+
+            color: white;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .small-text {
+
+            color: #93c5fd;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+
+            font-size: 62px;
+
+            line-height: 1.1;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #60a5fa;
+        }
+
+        .hero p {
+
+            max-width: 620px;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+
+            color: #e5e7eb;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .hero-buttons {
+            margin-top: 35px;
+        }
+
+        .btn {
+
+            display: inline-block;
+
+            padding: 15px 28px;
+
+            margin-right: 12px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color: white;
+
+            box-shadow:
+                0 8px 20px rgba(37,99,235,0.35);
+        }
+
+        .primary:hover {
+            transform: translateY(-3px);
+        }
+
+        .secondary {
+
+            border: 1px solid white;
+
+            color: white;
+
+            background: rgba(255,255,255,0.10);
+        }
+
+        .secondary:hover {
+
+            background: white;
+
+            color: #2563eb;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+
+            padding: 90px 7%;
+
+            text-align: center;
+        }
+
+        .section h2 {
+
+            font-size: 40px;
+
+            margin-bottom: 18px;
+        }
+
+        .section-intro {
+
+            max-width: 700px;
+
+            margin: 0 auto 50px;
+
+            color: #64748b;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+        /* ================= ABOUT ================= */
+
+        .about-section {
+
+            background-image:
+
+                linear-gradient(
+                    rgba(239,246,255,0.94),
+                    rgba(245,243,255,0.94)
+                ),
+
+                url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .about-box {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding: 50px;
+
+            border-radius: 25px;
+
+            background: rgba(255,255,255,0.94);
+
+            box-shadow:
+                0 15px 40px rgba(37,99,235,0.12);
+        }
+
+        .about-box p {
+
+            color: #64748b;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+        /* ================= SERVICES ================= */
+
+        .services {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+        .service-card {
+
+            padding: 38px 28px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 12px 35px rgba(15,23,42,0.08);
+
+            transition: 0.3s;
+
+            border-top: 4px solid #3b82f6;
+        }
+
+        .service-card:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow:
+                0 20px 40px rgba(37,99,235,0.15);
+        }
+
+        .service-icon {
+
+            width: 70px;
+
+            height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: auto;
+
+            margin-bottom: 20px;
+
+            border-radius: 18px;
+
+            font-size: 35px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dbeafe,
+                    #ede9fe
+                );
+        }
+
+        .service-card h3 {
+
+            margin-bottom: 12px;
+
+            font-size: 21px;
+        }
+
+        .service-card p {
+
+            color: #64748b;
+
+            line-height: 1.7;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            padding: 75px 7%;
+
+            color: white;
+
+            text-align: center;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(30,41,90,0.90),
+                    rgba(37,99,235,0.88)
+                ),
+
+                url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .stat h3 {
+
+            font-size: 40px;
+
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+
+            color: #dbeafe;
+
+            font-size: 16px;
+        }
+
+        /* ================= REVIEWS ================= */
+
+        .review-section {
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #f5f3ff
+                );
+        }
+
+        .testimonial {
+
+            max-width: 750px;
+
+            margin: auto;
+
+            padding: 40px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .stars {
+
+            color: #f59e0b;
+
+            font-size: 25px;
+
+            margin-bottom: 18px;
+        }
+
+        .testimonial p {
+
+            color: #64748b;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+        .customer {
+
+            margin-top: 20px;
+
+            font-weight: bold;
+
+            color: #1e293b;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+
+            color: white;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(15,23,42,0.90),
+                    rgba(37,99,235,0.85)
+                ),
+
+                url("https://images.unsplash.com/photo-1497366811360-2e5e1b3c5a0a?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .contact-box {
+
+            max-width: 700px;
+
+            margin: auto;
+        }
+
+        .contact-box p {
+
+            margin: 15px 0;
+
+            color: #e2e8f0;
+
+            font-size: 17px;
+        }
+
+        .contact-button {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 15px 30px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .contact-button:hover {
+
+            transform: translateY(-3px);
+
+            background: #dbeafe;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            padding: 30px;
+
+            text-align: center;
+
+            background: #0f172a;
+
+            color: #cbd5e1;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            nav a {
+
+                margin: 0 7px;
+            }
+
+            .hero h1 {
+
+                font-size: 45px;
+            }
+
+            .services {
+
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .hero {
+
+                padding: 70px 6%;
+            }
+
+            .hero h1 {
+
+                font-size: 38px;
+            }
+
+            .stats {
+
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+
+                margin-bottom: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+
+    <div class="logo">
+        Pro<span>Business</span>
+    </div>
+
+    <div>
+
+        <a href="#home">Home</a>
+
+        <a href="#about">About</a>
+
+        <a href="#services">Services</a>
+
+        <a href="#reviews">Reviews</a>
+
+        <a href="#contact">Contact</a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="small-text">
+            SMART BUSINESS SOLUTIONS
+        </p>
+
+        <h1>
+            Grow Your Business.
+            <span>Build Your Future.</span>
+        </h1>
+
+        <p>
+            We create modern digital experiences that help
+            businesses attract customers, build trust and
+            grow their online presence.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#services"
+               class="btn primary">
+
+                Explore Services
+
+            </a>
+
+            <a href="#contact"
+               class="btn secondary">
+
+                Contact Us
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section about-section"
+         id="about">
+
+    <h2>
+        About ProBusiness
+    </h2>
+
+    <p class="section-intro">
+
+        We help businesses transform their ideas into
+        professional digital experiences.
+
+    </p>
+
+    <div class="about-box">
+
+        <p>
+
+            ProBusiness is a modern business solutions
+            company focused on web development, digital
+            growth and technology solutions.
+
+            Our goal is to make it easier for businesses
+            to connect with their customers online.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SERVICES ================= -->
+
+<section class="section"
+         id="services">
+
+    <h2>
+        Our Services
+    </h2>
+
+    <p class="section-intro">
+
+        Powerful digital solutions designed to help
+        your business grow.
+
+    </p>
+
+
+    <div class="services">
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🌐
+            </div>
+
+            <h3>
+                Web Development
+            </h3>
+
+            <p>
+
+                Responsive and modern websites
+                designed for your business.
+
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                📈
+            </div>
+
+            <h3>
+                Business Growth
+            </h3>
+
+            <p>
+
+                Digital strategies to help your
+                business reach more customers.
+
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                💡
+            </div>
+
+            <h3>
+                Digital Solutions
+            </h3>
+
+            <p>
+
+                Smart technology solutions that
+                improve business productivity.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+    <div class="stat">
+
+        <h3>
+            150+
+        </h3>
+
+        <p>
+            Projects Completed
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h3>
+            90+
+        </h3>
+
+        <p>
+            Happy Clients
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h3>
+            8+
+        </h3>
+
+        <p>
+            Years Experience
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h3>
+            24/7
+        </h3>
+
+        <p>
+            Customer Support
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REVIEWS ================= -->
+
+<section class="section review-section"
+         id="reviews">
+
+    <h2>
+        Customer Reviews
+    </h2>
+
+    <p class="section-intro">
+
+        See what our customers say about
+        working with ProBusiness.
+
+    </p>
+
+
+    <div class="testimonial">
+
+        <div class="stars">
+            ★★★★★
+        </div>
+
+        <p>
+
+            "ProBusiness understood our requirements
+            perfectly and created a professional
+            website that helped us improve our
+            online presence."
+
+        </p>
+
+        <div class="customer">
+
+            — Arjun, Business Owner
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section contact"
+         id="contact">
+
+    <div class="contact-box">
+
+        <h2>
+            Let's Work Together
+        </h2>
+
+        <p>
+            Ready to take your business online?
+        </p>
+
+        <p>
+            📧 hello@probusiness.com
+        </p>
+
+        <p>
+            📞 +91 98765 43210
+        </p>
+
+        <a href="#"
+           class="contact-button">
+
+            Get Started
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 ProBusiness.
+        WebsiteHub Demo.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

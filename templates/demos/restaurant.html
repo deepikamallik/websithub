@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Food Haven | Restaurant</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #292524;
+            background: #fffaf5;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 75px;
+            padding: 0 7%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(25, 15, 8, 0.96);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            box-shadow: 0 3px 20px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: #fbbf24;
+            font-size: 27px;
+            font-family: Georgia, serif;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fbbf24;
+        }
+
+        .nav-button {
+            padding: 11px 20px;
+            border-radius: 25px;
+            background: #f97316;
+            color: white !important;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            min-height: 680px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(20, 10, 5, 0.58),
+                    rgba(20, 10, 5, 0.72)
+                ),
+                url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            padding: 30px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+
+            padding: 9px 18px;
+
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.12);
+
+            font-size: 12px;
+            letter-spacing: 2px;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: Georgia, serif;
+
+            font-size: 72px;
+            line-height: 1.1;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #fbbf24;
+        }
+
+        .hero p {
+            max-width: 680px;
+
+            margin: auto auto 30px;
+
+            font-size: 19px;
+            line-height: 1.7;
+
+            color: #fef3c7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-button {
+            display: inline-block;
+
+            padding: 15px 30px;
+
+            border-radius: 30px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            background: #f97316;
+            color: white;
+
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 30px rgba(249,115,22,0.4);
+        }
+
+        .hero-button.light {
+            background: white;
+            color: #9a3412;
+        }
+
+
+        /* ================= QUICK INFO ================= */
+
+        .quick-info {
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            max-width: 1000px;
+
+            margin: -45px auto 0;
+
+            position: relative;
+            z-index: 5;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background: white;
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.15);
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 10px 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .info-box:last-child {
+            border-right: none;
+        }
+
+        .info-box strong {
+            display: block;
+
+            color: #c2410c;
+
+            font-size: 20px;
+
+            margin-bottom: 5px;
+        }
+
+        .info-box span {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* ================= ABOUT ================= */
+
+        .about {
+
+            padding: 110px 8%;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 60px;
+
+            align-items: center;
+
+            background: white;
+        }
+
+        .about-image {
+
+            min-height: 400px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.15),
+                    rgba(0,0,0,0.15)
+                ),
+                url("https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1000&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .about-content small {
+            color: #ea580c;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+        }
+
+        .about-content h2 {
+
+            font-family: Georgia, serif;
+
+            font-size: 45px;
+
+            margin: 15px 0 20px;
+        }
+
+        .about-content p {
+
+            color: #666;
+
+            line-height: 1.8;
+
+            margin-bottom: 20px;
+        }
+
+        .about-points {
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+        .about-points div {
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background: #fff7ed;
+
+            color: #9a3412;
+
+            font-weight: 600;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= MENU ================= */
+
+        .menu {
+
+            padding: 100px 7%;
+
+            background:
+                linear-gradient(
+                    rgba(255,247,237,0.95),
+                    rgba(255,247,237,0.95)
+                ),
+                url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80");
+
+            background-size: cover;
+            background-position: center;
+
+            text-align: center;
+        }
+
+        .section-label {
+
+            color: #ea580c;
+
+            font-size: 12px;
+
+            letter-spacing: 3px;
+
+            font-weight: bold;
+        }
+
+        .menu h2 {
+
+            font-family: Georgia, serif;
+
+            font-size: 45px;
+
+            margin: 12px 0 45px;
+        }
+
+        .menu-grid {
+
+            max-width: 1150px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+        .food-card {
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: white;
+
+            text-align: left;
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,0.10);
+
+            transition: 0.3s;
+        }
+
+        .food-card:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow:
+                0 20px 45px rgba(0,0,0,0.16);
+        }
+
+        .food-image {
+
+            height: 220px;
+
+            background-size: cover;
+            background-position: center;
+
+            position: relative;
+        }
+
+        .pizza {
+
+            background-image:
+                linear-gradient(
+                    rgba(0,0,0,0.1),
+                    rgba(0,0,0,0.1)
+                ),
+                url("https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=85");
+        }
+
+        .pasta {
+
+            background-image:
+                linear-gradient(
+                    rgba(0,0,0,0.1),
+                    rgba(0,0,0,0.1)
+                ),
+                url("https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=85");
+        }
+
+        .dessert {
+
+            background-image:
+                linear-gradient(
+                    rgba(0,0,0,0.1),
+                    rgba(0,0,0,0.1)
+                ),
+                url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85");
+        }
+
+        .food-tag {
+
+            position: absolute;
+
+            top: 15px;
+            left: 15px;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: #f97316;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .food-info {
+
+            padding: 23px;
+        }
+
+        .food-info h3 {
+
+            font-family: Georgia, serif;
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .food-info p {
+
+            color: #777;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+
+            margin-bottom: 16px;
+        }
+
+        .food-bottom {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .price {
+
+            color: #ea580c;
+
+            font-size: 21px;
+
+            font-weight: bold;
+        }
+
+        .rating {
+
+            color: #f59e0b;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= OFFER ================= */
+
+        .offer {
+
+            padding: 80px 7%;
+
+            background:
+                linear-gradient(
+                    rgba(124,45,18,0.92),
+                    rgba(194,65,12,0.92)
+                ),
+                url("https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1800&q=80");
+
+            background-size: cover;
+            background-position: center;
+
+            color: white;
+
+            text-align: center;
+        }
+
+        .offer h2 {
+
+            font-family: Georgia, serif;
+
+            font-size: 43px;
+
+            margin-bottom: 12px;
+        }
+
+        .offer p {
+
+            font-size: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .offer-badge {
+
+            display: inline-block;
+
+            padding: 8px 18px;
+
+            border-radius: 30px;
+
+            background: #fbbf24;
+
+            color: #78350f;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* ================= REVIEWS ================= */
+
+        .reviews {
+
+            padding: 90px 7%;
+
+            background: white;
+
+            text-align: center;
+        }
+
+        .reviews h2 {
+
+            font-family: Georgia, serif;
+
+            font-size: 42px;
+
+            margin: 12px 0 40px;
+        }
+
+        .review-grid {
+
+            max-width: 1050px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .review-card {
+
+            padding: 28px;
+
+            border-radius: 18px;
+
+            background: #fffaf5;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            text-align: left;
+        }
+
+        .review-card .stars {
+
+            color: #f59e0b;
+
+            margin-bottom: 15px;
+        }
+
+        .review-card p {
+
+            color: #555;
+
+            line-height: 1.7;
+
+            margin-bottom: 15px;
+        }
+
+        .review-card strong {
+
+            color: #9a3412;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+
+            padding: 100px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(20,10,5,0.75),
+                    rgba(20,10,5,0.75)
+                ),
+                url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cta h2 {
+
+            font-family: Georgia, serif;
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+
+            margin-bottom: 28px;
+
+            font-size: 18px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            padding: 45px 7%;
+
+            text-align: center;
+
+            background: #1c1917;
+
+            color: #d6d3d1;
+        }
+
+        footer .footer-logo {
+
+            color: #fbbf24;
+
+            font-family: Georgia, serif;
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+        footer p {
+
+            color: #a8a29e;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+            }
+
+            .quick-info {
+                width: 90%;
+                grid-template-columns: 1fr;
+            }
+
+            .info-box {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding: 15px;
+            }
+
+            .info-box:last-child {
+                border-bottom: none;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid,
+            .review-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .hero {
+                min-height: 600px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .about,
+            .menu,
+            .reviews {
+                padding: 70px 5%;
+            }
+
+            .about-content h2,
+            .menu h2,
+            .reviews h2,
+            .cta h2,
+            .offer h2 {
+                font-size: 34px;
+            }
+
+            .about-points {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <div class="logo">
+            🍴 Food Haven
+        </div>
+
+        <div class="nav-links">
+
+            <a href="#home">Home</a>
+
+            <a href="#about">About</a>
+
+            <a href="#menu">Menu</a>
+
+            <a href="#reviews">Reviews</a>
+
+            <a href="#contact">Contact</a>
+
+            <a href="#menu" class="nav-button">
+                Order Now
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                ✨ WELCOME TO FOOD HAVEN
+            </div>
+
+            <h1>
+                Taste the
+                <span>Difference</span>
+            </h1>
+
+            <p>
+                Fresh ingredients, authentic flavours and
+                unforgettable moments served at your table.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#menu" class="hero-button">
+                    Explore Our Menu →
+                </a>
+
+                <a href="#contact"
+                   class="hero-button light">
+                    Reserve a Table
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUICK INFORMATION -->
+
+    <div class="quick-info">
+
+        <div class="info-box">
+
+            <strong>⭐ 4.9/5</strong>
+
+            <span>
+                Customer Rating
+            </span>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong>🍽️ 50+</strong>
+
+            <span>
+                Delicious Dishes
+            </span>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong>🕐 11 AM - 11 PM</strong>
+
+            <span>
+                Open Every Day
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+
+    <section class="about" id="about">
+
+        <div class="about-image"></div>
+
+        <div class="about-content">
+
+            <small>
+                OUR STORY
+            </small>
+
+            <h2>
+                Made With Passion,
+                Served With Love
+            </h2>
+
+            <p>
+                At Food Haven, we believe that great food is
+                more than just a meal. It is an experience
+                shared with family, friends and loved ones.
+            </p>
+
+            <p>
+                Our chefs combine fresh ingredients,
+                traditional recipes and modern creativity
+                to create dishes that keep our customers
+                coming back.
+            </p>
+
+            <div class="about-points">
+
+                <div>✓ Fresh Ingredients</div>
+
+                <div>✓ Expert Chefs</div>
+
+                <div>✓ Cozy Atmosphere</div>
+
+                <div>✓ Friendly Service</div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MENU -->
+
+    <section class="menu" id="menu">
+
+        <span class="section-label">
+            OUR SPECIALITIES
+        </span>
+
+        <h2>
+            Customer Favorites
+        </h2>
+
+        <div class="menu-grid">
+
+
+            <!-- PIZZA -->
+
+            <div class="food-card">
+
+                <div class="food-image pizza">
+
+                    <span class="food-tag">
+                        ⭐ BEST SELLER
+                    </span>
+
+                </div>
+
+                <div class="food-info">
+
+                    <h3>
+                        Classic Pizza
+                    </h3>
+
+                    <p>
+                        Fresh vegetables, melted cheese
+                        and our signature homemade sauce.
+                    </p>
+
+                    <div class="food-bottom">
+
+                        <span class="price">
+                            ₹299
+                        </span>
+
+                        <span class="rating">
+                            ★★★★★
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PASTA -->
+
+            <div class="food-card">
+
+                <div class="food-image pasta">
+
+                    <span class="food-tag">
+                        👨‍🍳 CHEF'S CHOICE
+                    </span>
+
+                </div>
+
+                <div class="food-info">
+
+                    <h3>
+                        Pasta Alfredo
+                    </h3>
+
+                    <p>
+                        Creamy pasta with herbs,
+                        parmesan and rich Alfredo sauce.
+                    </p>
+
+                    <div class="food-bottom">
+
+                        <span class="price">
+                            ₹249
+                        </span>
+
+                        <span class="rating">
+                            ★★★★★
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DESSERT -->
+
+            <div class="food-card">
+
+                <div class="food-image dessert">
+
+                    <span class="food-tag">
+                        🍰 POPULAR
+                    </span>
+
+                </div>
+
+                <div class="food-info">
+
+                    <h3>
+                        Chocolate Dessert
+                    </h3>
+
+                    <p>
+                        A rich chocolate dessert
+                        to finish your meal perfectly.
+                    </p>
+
+                    <div class="food-bottom">
+
+                        <span class="price">
+                            ₹199
+                        </span>
+
+                        <span class="rating">
+                            ★★★★★
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- SPECIAL OFFER -->
+
+    <section class="offer">
+
+        <div class="offer-badge">
+            🔥 LIMITED TIME OFFER
+        </div>
+
+        <h2>
+            Get 20% Off Your First Order
+        </h2>
+
+        <p>
+            Experience our signature dishes and
+            enjoy a special welcome discount.
+        </p>
+
+        <a href="#contact" class="hero-button light">
+            Order Now →
+        </a>
+
+    </section>
+
+
+    <!-- REVIEWS -->
+
+    <section class="reviews" id="reviews">
+
+        <span class="section-label">
+            CUSTOMER LOVE
+        </span>
+
+        <h2>
+            What Our Customers Say
+        </h2>
+
+        <div class="review-grid">
+
+            <div class="review-card">
+
+                <div class="stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "Amazing food and beautiful atmosphere.
+                    The pizza was absolutely delicious!"
+                </p>
+
+                <strong>
+                    — Priya M.
+                </strong>
+
+            </div>
+
+
+            <div class="review-card">
+
+                <div class="stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "The service was excellent and the pasta
+                    was one of the best I've ever had."
+                </p>
+
+                <strong>
+                    — Rahul K.
+                </strong>
+
+            </div>
+
+
+            <div class="review-card">
+
+                <div class="stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "Perfect place for a family dinner.
+                    Everything tasted fresh and delicious."
+                </p>
+
+                <strong>
+                    — Sneha R.
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="cta" id="contact">
+
+        <h2>
+            Ready for a Delicious Experience?
+        </h2>
+
+        <p>
+            Reserve your table and make your next meal memorable.
+        </p>
+
+        <a href="#menu" class="hero-button">
+            View Our Menu →
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-logo">
+            🍴 Food Haven
+        </div>
+
+        <p>
+            Fresh food • Warm hospitality • Happy moments
+        </p>
+
+        <p>
+            📍 Mangaluru &nbsp; | &nbsp;
+            📞 +91 98765 43210 &nbsp; | &nbsp;
+            ✉️ hello@foodhaven.com
+        </p>
+
+        <p>
+            © 2026 Food Haven · All Rights Reserved
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

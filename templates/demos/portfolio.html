@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Creative Me | Portfolio Website Demo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #1f2937;
+            background: #faf5ff;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 7%;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+
+        .logo span {
+            color: #ec4899;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+
+            margin-left: 24px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #9333ea;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            min-height: 680px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 90px 7%;
+
+            position: relative;
+
+            background-image:
+
+                linear-gradient(
+                    90deg,
+                    rgba(35, 10, 55, 0.92),
+                    rgba(70, 20, 90, 0.70),
+                    rgba(70, 20, 90, 0.25)
+                ),
+
+                url("https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .hero-content {
+
+            max-width: 720px;
+
+            color: white;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .small-text {
+
+            color: #f0abfc;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+
+            font-size: 62px;
+
+            line-height: 1.1;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+
+            color: #f472b6;
+        }
+
+        .hero p {
+
+            max-width: 620px;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+
+            color: #f3e8ff;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .hero-buttons {
+
+            margin-top: 35px;
+        }
+
+        .btn {
+
+            display: inline-block;
+
+            padding: 15px 28px;
+
+            margin-right: 12px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary {
+
+            color: white;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #9333ea,
+                    #ec4899
+                );
+
+            box-shadow:
+
+                0 8px 22px rgba(147, 51, 234, 0.35);
+        }
+
+        .primary:hover {
+
+            transform: translateY(-3px);
+        }
+
+        .secondary {
+
+            color: white;
+
+            border: 1px solid white;
+
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .secondary:hover {
+
+            background: white;
+
+            color: #9333ea;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .section {
+
+            padding: 90px 7%;
+
+            text-align: center;
+        }
+
+        .section h2 {
+
+            font-size: 40px;
+
+            margin-bottom: 18px;
+        }
+
+        .section-intro {
+
+            max-width: 700px;
+
+            margin: 0 auto 50px;
+
+            color: #6b7280;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+
+        /* ================= ABOUT ================= */
+
+        .about-box {
+
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 45px;
+
+            border-radius: 25px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #fdf4ff
+                );
+
+            box-shadow:
+
+                0 15px 40px rgba(126, 34, 206, 0.10);
+        }
+
+        .about-box p {
+
+            color: #6b7280;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+
+        /* ================= SKILLS ================= */
+
+        .skills {
+
+            max-width: 950px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+        .skill {
+
+            padding: 25px 15px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            box-shadow:
+
+                0 10px 30px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+        .skill:hover {
+
+            transform: translateY(-7px);
+        }
+
+        .skill-icon {
+
+            font-size: 38px;
+
+            margin-bottom: 12px;
+        }
+
+        .skill h3 {
+
+            font-size: 17px;
+        }
+
+
+        /* ================= PROJECTS ================= */
+
+        .projects {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+        .project {
+
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            text-align: left;
+
+            box-shadow:
+
+                0 12px 35px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .project:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow:
+
+                0 20px 40px rgba(126, 34, 206, 0.15);
+        }
+
+        .project-image {
+
+            height: 220px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background-size: cover;
+
+            background-position: center;
+
+            position: relative;
+        }
+
+        .project-image::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(
+                rgba(40, 10, 60, 0.25),
+                rgba(120, 30, 120, 0.35)
+            );
+        }
+
+        .project-icon {
+
+            position: relative;
+
+            z-index: 2;
+
+            font-size: 60px;
+        }
+
+
+        /* PROJECT IMAGES */
+
+        .project-one {
+
+            background-image:
+
+                url("https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=900&q=80");
+        }
+
+        .project-two {
+
+            background-image:
+
+                url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80");
+        }
+
+        .project-three {
+
+            background-image:
+
+                url("https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=80");
+        }
+
+        .project-info {
+
+            padding: 25px;
+        }
+
+        .project-info h3 {
+
+            margin-bottom: 10px;
+        }
+
+        .project-info p {
+
+            color: #6b7280;
+
+            line-height: 1.6;
+        }
+
+
+        /* ================= OFFER ================= */
+
+        .offer {
+
+            padding: 80px 7%;
+
+            text-align: center;
+
+            color: white;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(88, 28, 135, 0.90),
+                    rgba(190, 24, 93, 0.88)
+                ),
+
+                url("https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .offer h2 {
+
+            font-size: 42px;
+
+            margin-bottom: 15px;
+        }
+
+        .offer p {
+
+            color: #fce7f3;
+
+            font-size: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .offer-button {
+
+            display: inline-block;
+
+            padding: 14px 28px;
+
+            background: white;
+
+            color: #9333ea;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .offer-button:hover {
+
+            transform: translateY(-3px);
+        }
+
+
+        /* ================= REVIEWS ================= */
+
+        .review-section {
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #faf5ff,
+                    #fdf2f8
+                );
+        }
+
+        .testimonial {
+
+            max-width: 750px;
+
+            margin: auto;
+
+            padding: 40px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            box-shadow:
+
+                0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .stars {
+
+            color: #f59e0b;
+
+            font-size: 25px;
+
+            margin-bottom: 18px;
+        }
+
+        .testimonial p {
+
+            color: #6b7280;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+        .customer {
+
+            margin-top: 20px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+
+            color: white;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(35, 10, 55, 0.92),
+                    rgba(126, 34, 206, 0.88)
+                ),
+
+                url("https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+
+            background-position: center;
+        }
+
+        .contact-box {
+
+            max-width: 700px;
+
+            margin: auto;
+        }
+
+        .contact-box p {
+
+            margin: 15px 0;
+
+            color: #f3e8ff;
+
+            font-size: 17px;
+        }
+
+        .contact-button {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 15px 30px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #9333ea;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .contact-button:hover {
+
+            transform: translateY(-3px);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            padding: 30px;
+
+            text-align: center;
+
+            background: #18181b;
+
+            color: #d4d4d8;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            nav a {
+
+                margin: 0 7px;
+            }
+
+            .hero h1 {
+
+                font-size: 45px;
+            }
+
+            .skills {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .projects {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .hero {
+
+                padding: 70px 6%;
+            }
+
+            .hero h1 {
+
+                font-size: 38px;
+            }
+
+            .skills {
+
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+
+                margin-bottom: 12px;
+            }
+
+            nav a {
+
+                font-size: 14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+
+    <div class="logo">
+        Creative<span>Me</span>
+    </div>
+
+    <div>
+
+        <a href="#home">Home</a>
+
+        <a href="#about">About</a>
+
+        <a href="#skills">Skills</a>
+
+        <a href="#projects">Projects</a>
+
+        <a href="#reviews">Reviews</a>
+
+        <a href="#contact">Contact</a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="small-text">
+            CREATIVE PORTFOLIO
+        </p>
+
+        <h1>
+            Create.
+            <span>Inspire. Showcase.</span>
+        </h1>
+
+        <p>
+
+            A modern portfolio website designed for
+            developers, designers, photographers and
+            creative professionals who want to showcase
+            their work beautifully.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#projects"
+               class="btn primary">
+
+                View My Work
+
+            </a>
+
+            <a href="#contact"
+               class="btn secondary">
+
+                Contact Me
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section"
+         id="about">
+
+    <h2>
+        About Me
+    </h2>
+
+    <p class="section-intro">
+
+        A clean and professional space to introduce
+        your skills, experience and creative journey.
+
+    </p>
+
+    <div class="about-box">
+
+        <p>
+
+            Hello! I'm a creative professional passionate
+            about technology, design and building meaningful
+            digital experiences.
+
+            This portfolio helps showcase my work,
+            skills and projects while making it easy
+            for potential clients to connect with me.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SKILLS ================= -->
+
+<section class="section"
+         id="skills">
+
+    <h2>
+        My Skills
+    </h2>
+
+    <p class="section-intro">
+
+        Technologies and creative skills used
+        to build modern digital experiences.
+
+    </p>
+
+
+    <div class="skills">
+
+
+        <div class="skill">
+
+            <div class="skill-icon">
+                💻
+            </div>
+
+            <h3>
+                Web Development
+            </h3>
+
+        </div>
+
+
+        <div class="skill">
+
+            <div class="skill-icon">
+                🎨
+            </div>
+
+            <h3>
+                UI / UX Design
+            </h3>
+
+        </div>
+
+
+        <div class="skill">
+
+            <div class="skill-icon">
+                📱
+            </div>
+
+            <h3>
+                Responsive Design
+            </h3>
+
+        </div>
+
+
+        <div class="skill">
+
+            <div class="skill-icon">
+                🚀
+            </div>
+
+            <h3>
+                Digital Projects
+            </h3>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= PROJECTS ================= -->
+
+<section class="section"
+         id="projects">
+
+    <h2>
+        Featured Projects
+    </h2>
+
+    <p class="section-intro">
+
+        A selection of projects that demonstrate
+        creativity and technical ability.
+
+    </p>
+
+
+    <div class="projects">
+
+
+        <!-- PROJECT 1 -->
+
+        <div class="project">
+
+            <div class="project-image project-one">
+
+                <div class="project-icon">
+                    💻
+                </div>
+
+            </div>
+
+            <div class="project-info">
+
+                <h3>
+                    Business Website
+                </h3>
+
+                <p>
+
+                    Modern responsive website designed
+                    for a growing business.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT 2 -->
+
+        <div class="project">
+
+            <div class="project-image project-two">
+
+                <div class="project-icon">
+                    📊
+                </div>
+
+            </div>
+
+            <div class="project-info">
+
+                <h3>
+                    Data Dashboard
+                </h3>
+
+                <p>
+
+                    Interactive dashboard for presenting
+                    important business information.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT 3 -->
+
+        <div class="project">
+
+            <div class="project-image project-three">
+
+                <div class="project-icon">
+                    🤖
+                </div>
+
+            </div>
+
+            <div class="project-info">
+
+                <h3>
+                    AI Project
+                </h3>
+
+                <p>
+
+                    An intelligent application created
+                    using modern AI technologies.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= OFFER ================= -->
+
+<section class="offer">
+
+    <h2>
+        Portfolio Special Offer 🎉
+    </h2>
+
+    <p>
+
+        Get this professional portfolio website
+        with 20% customization discount.
+
+    </p>
+
+    <a href="#contact"
+       class="offer-button">
+
+        Customize My Website
+
+    </a>
+
+</section>
+
+
+<!-- ================= REVIEWS ================= -->
+
+<section class="section review-section"
+         id="reviews">
+
+    <h2>
+        Client Reviews
+    </h2>
+
+    <p class="section-intro">
+
+        Feedback from clients who worked with
+        this portfolio design.
+
+    </p>
+
+
+    <div class="testimonial">
+
+        <div class="stars">
+            ★★★★★
+        </div>
+
+        <p>
+
+            "The portfolio design looks modern,
+            professional and makes it very easy
+            to showcase my projects to clients."
+
+        </p>
+
+        <div class="customer">
+
+            — Rahul, Designer
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section contact"
+         id="contact">
+
+    <div class="contact-box">
+
+        <h2>
+            Let's Create Something Amazing
+        </h2>
+
+        <p>
+            Interested in this portfolio website?
+        </p>
+
+        <p>
+            📧 hello@creativeme.com
+        </p>
+
+        <p>
+            📞 +91 98765 43210
+        </p>
+
+        <a href="#home"
+           class="contact-button">
+
+            Get Started
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+
+        © 2026 Creative Me.
+        WebsiteHub Demo.
+
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

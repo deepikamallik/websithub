@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere | E-commerce Website Demo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff7ed;
+            color: #1f2937;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 7%;
+
+            background: rgba(255,255,255,0.96);
+
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ea580c;
+        }
+
+        .logo span {
+            color: #db2777;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+            margin-left: 24px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ea580c;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 680px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 90px 7%;
+
+            background-image:
+
+                linear-gradient(
+                    90deg,
+                    rgba(40,15,5,0.88),
+                    rgba(40,15,5,0.55),
+                    rgba(40,15,5,0.20)
+                ),
+
+                url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 720px;
+            color: white;
+        }
+
+        .small-text {
+            color: #fed7aa;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 62px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #fb7185;
+        }
+
+        .hero p {
+            max-width: 620px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #f3f4f6;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .hero-buttons {
+            margin-top: 35px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 28px;
+            margin-right: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #ea580c, #db2777);
+            color: white;
+            box-shadow: 0 8px 20px rgba(234,88,12,0.35);
+        }
+
+        .primary:hover {
+            transform: translateY(-3px);
+        }
+
+        .secondary {
+            border: 1px solid white;
+            color: white;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .secondary:hover {
+            background: white;
+            color: #ea580c;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            padding: 90px 7%;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 40px;
+            margin-bottom: 18px;
+        }
+
+        .section-intro {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* ================= PRODUCTS ================= */
+
+        .products {
+            max-width: 1100px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(234,88,12,0.15);
+        }
+
+        /* REAL PRODUCT IMAGES */
+
+        .product-image {
+            height: 230px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: 0.4s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.08);
+        }
+
+        .product-info {
+            padding: 25px;
+            text-align: left;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+            font-size: 21px;
+        }
+
+        .product-info p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .new-price {
+            font-size: 23px;
+            font-weight: bold;
+            color: #ea580c;
+        }
+
+        .old-price {
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
+        .discount {
+            background: #dcfce7;
+            color: #15803d;
+
+            padding: 5px 9px;
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .shop-btn {
+            display: block;
+            text-align: center;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            background: linear-gradient(
+                135deg,
+                #ea580c,
+                #db2777
+            );
+
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ================= OFFER ================= */
+
+        .offer {
+            padding: 90px 7%;
+
+            text-align: center;
+            color: white;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(124,45,18,0.82),
+                    rgba(190,24,93,0.82)
+                ),
+
+                url("https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .offer h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .offer p {
+            font-size: 18px;
+            color: #ffe4e6;
+            margin-bottom: 25px;
+        }
+
+        .offer-button {
+            display: inline-block;
+
+            padding: 14px 28px;
+
+            background: white;
+            color: #db2777;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ================= REVIEWS ================= */
+
+        .review-section {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff7ed,
+                    #fdf2f8
+                );
+        }
+
+        .testimonial {
+            max-width: 750px;
+            margin: auto;
+
+            padding: 40px;
+
+            background: white;
+            border-radius: 22px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .stars {
+            color: #f59e0b;
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
+
+        .testimonial p {
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .customer {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+            color: white;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(30,20,20,0.88),
+                    rgba(190,24,93,0.85)
+                ),
+
+                url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .contact-box {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .contact-box p {
+            margin: 15px 0;
+            color: #fce7f3;
+            font-size: 17px;
+        }
+
+        .contact-button {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 15px 30px;
+
+            border-radius: 10px;
+
+            background: white;
+            color: #db2777;
+
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            padding: 30px;
+            text-align: center;
+
+            background: #18181b;
+            color: #d4d4d8;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .hero {
+                padding: 70px 6%;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .btn {
+                margin-bottom: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+
+    <div class="logo">
+        Shop<span>Sphere</span>
+    </div>
+
+    <div>
+
+        <a href="#home">Home</a>
+
+        <a href="#products">Products</a>
+
+        <a href="#offers">Offers</a>
+
+        <a href="#reviews">Reviews</a>
+
+        <a href="#contact">Contact</a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="small-text">
+            YOUR ONLINE SHOPPING DESTINATION
+        </p>
+
+        <h1>
+            Shop Smart.
+            <span>Live Better.</span>
+        </h1>
+
+        <p>
+            Discover stylish products, exciting offers
+            and quality collections designed to make
+            your shopping experience simple and enjoyable.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#products" class="btn primary">
+                Explore Products
+            </a>
+
+            <a href="#offers" class="btn secondary">
+                View Offers
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="section" id="products">
+
+    <h2>
+        Featured Products
+    </h2>
+
+    <p class="section-intro">
+        Explore some of our popular products
+        and special deals.
+    </p>
+
+
+    <div class="products">
+
+
+        <!-- PRODUCT 1 -->
+
+        <div class="product-card">
+
+            <div class="product-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"
+                    alt="Urban Sneakers">
+
+            </div>
+
+            <div class="product-info">
+
+                <h3>
+                    Urban Sneakers
+                </h3>
+
+                <div class="rating">
+                    ★★★★★
+                </div>
+
+                <p>
+                    Comfortable and stylish sneakers
+                    for everyday use.
+                </p>
+
+                <div class="price">
+
+                    <span class="new-price">
+                        ₹2,499
+                    </span>
+
+                    <span class="old-price">
+                        ₹3,499
+                    </span>
+
+                    <span class="discount">
+                        29% OFF
+                    </span>
+
+                </div>
+
+                <a href="#" class="shop-btn">
+                    Buy Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 2 -->
+
+        <div class="product-card">
+
+            <div class="product-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85"
+                    alt="Wireless Headphones">
+
+            </div>
+
+            <div class="product-info">
+
+                <h3>
+                    Wireless Headphones
+                </h3>
+
+                <div class="rating">
+                    ★★★★☆
+                </div>
+
+                <p>
+                    Enjoy clear sound and comfortable
+                    wireless listening.
+                </p>
+
+                <div class="price">
+
+                    <span class="new-price">
+                        ₹3,999
+                    </span>
+
+                    <span class="old-price">
+                        ₹5,499
+                    </span>
+
+                    <span class="discount">
+                        27% OFF
+                    </span>
+
+                </div>
+
+                <a href="#" class="shop-btn">
+                    Buy Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 3 -->
+
+        <div class="product-card">
+
+            <div class="product-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85"
+                    alt="Classic Handbag">
+
+            </div>
+
+            <div class="product-info">
+
+                <h3>
+                    Classic Handbag
+                </h3>
+
+                <div class="rating">
+                    ★★★★★
+                </div>
+
+                <p>
+                    Elegant everyday handbag with
+                    a modern premium design.
+                </p>
+
+                <div class="price">
+
+                    <span class="new-price">
+                        ₹1,899
+                    </span>
+
+                    <span class="old-price">
+                        ₹2,499
+                    </span>
+
+                    <span class="discount">
+                        24% OFF
+                    </span>
+
+                </div>
+
+                <a href="#" class="shop-btn">
+                    Buy Now
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= OFFER ================= -->
+
+<section class="offer" id="offers">
+
+    <h2>
+        Special Offer 🎉
+    </h2>
+
+    <p>
+        Get up to 40% OFF on selected products.
+    </p>
+
+    <a href="#products" class="offer-button">
+        Shop Offers
+    </a>
+
+</section>
+
+
+<!-- ================= REVIEWS ================= -->
+
+<section class="section review-section" id="reviews">
+
+    <h2>
+        Customer Reviews
+    </h2>
+
+    <p class="section-intro">
+        Our customers share their shopping experience.
+    </p>
+
+
+    <div class="testimonial">
+
+        <div class="stars">
+            ★★★★★
+        </div>
+
+        <p>
+            "The products were exactly as shown
+            and the shopping experience was simple.
+            I especially liked the offers and easy
+            navigation."
+        </p>
+
+        <div class="customer">
+            — Priya, Happy Customer
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section contact" id="contact">
+
+    <div class="contact-box">
+
+        <h2>
+            Need Help?
+        </h2>
+
+        <p>
+            Our support team is ready to help you.
+        </p>
+
+        <p>
+            📧 support@shopsphere.com
+        </p>
+
+        <p>
+            📞 +91 98765 43210
+        </p>
+
+        <a href="#" class="contact-button">
+            Contact Support
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 ShopSphere.
+        WebsiteHub Demo.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
