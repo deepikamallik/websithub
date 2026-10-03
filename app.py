@@ -16,13 +16,12 @@ app.secret_key = "websitehub-secret-key-change-this"
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
+        host=os.environ.get("MYSQL_HOST"),
+        port=int(os.environ.get("MYSQL_PORT", 3306)),
+        user=os.environ.get("MYSQL_USER"),
         password=os.environ.get("MYSQL_PASSWORD"),
-        database="websitehub"
+        database=os.environ.get("MYSQL_DATABASE")
     )
-
 
 # =========================================================
 # EMAIL SETTINGS
