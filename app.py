@@ -7,7 +7,14 @@ from email.message import EmailMessage
 
 app = Flask(__name__)
 
-app.secret_key = "websitehub-secret-key-change-this"
+# =========================================================
+# FLASK SECRET KEY
+# =========================================================
+
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "websitehub-local-secret-key"
+)
 
 
 # =========================================================
@@ -15,19 +22,25 @@ app.secret_key = "websitehub-secret-key-change-this"
 # =========================================================
 
 def get_db_connection():
+
     return mysql.connector.connect(
         host=os.environ.get("MYSQL_HOST"),
-        port=int(os.environ.get("MYSQL_PORT", 3306)),
+        port=int(os.environ.get("MYSQL_PORT", "3306")),
         user=os.environ.get("MYSQL_USER"),
         password=os.environ.get("MYSQL_PASSWORD"),
         database=os.environ.get("MYSQL_DATABASE")
     )
 
+
 # =========================================================
 # EMAIL SETTINGS
 # =========================================================
 
-MY_EMAIL = "deepikamallik2006@gmail.com"
+MY_EMAIL = os.environ.get(
+    "MY_EMAIL",
+    "deepikamallik2006@gmail.com"
+)
+
 APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
 
 
@@ -61,7 +74,20 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if username == "admin" and password == "admin123":
+        admin_username = os.environ.get(
+            "ADMIN_USERNAME",
+            "admin"
+        )
+
+        admin_password = os.environ.get(
+            "ADMIN_PASSWORD",
+            "admin123"
+        )
+
+        if (
+            username == admin_username
+            and password == admin_password
+        ):
 
             session["admin_logged_in"] = True
 
@@ -97,6 +123,9 @@ def dashboard():
     if not session.get("admin_logged_in"):
         return redirect("/login")
 
+    db = None
+    cursor = None
+
     try:
 
         db = get_db_connection()
@@ -118,29 +147,34 @@ def dashboard():
             ORDER BY created_at DESC
         """)
 
-        requests = cursor.fetchall()
-
-        cursor.close()
-        db.close()
+        customer_requests = cursor.fetchall()
 
         return render_template(
             "dashboard.html",
-            requests=requests
+            requests=customer_requests
         )
 
     except Exception as e:
 
         print("DASHBOARD MYSQL ERROR:", e)
 
-        return f"""
+        return """
         <h2 style="text-align:center;margin-top:100px;">
             Dashboard Error ❌
         </h2>
 
         <p style="text-align:center;">
-            {e}
+            Please check the database connection.
         </p>
         """
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if db:
+            db.close()
 
 
 # =========================================================
@@ -152,6 +186,9 @@ def customer_details(customer_id):
 
     if not session.get("admin_logged_in"):
         return redirect("/login")
+
+    db = None
+    cursor = None
 
     try:
 
@@ -176,9 +213,6 @@ def customer_details(customer_id):
 
         customer = cursor.fetchone()
 
-        cursor.close()
-        db.close()
-
         if customer is None:
             return "Customer not found", 404
 
@@ -191,19 +225,23 @@ def customer_details(customer_id):
 
         print("CUSTOMER DETAILS ERROR:", e)
 
-        return f"""
+        return """
         <h2 style="text-align:center;margin-top:100px;">
             Customer Details Error ❌
         </h2>
-
-        <p style="text-align:center;">
-            {e}
-        </p>
         """
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if db:
+            db.close()
 
 
 # =========================================================
-# EDIT CUSTOMER + FOLLOW-UP REMINDER
+# EDIT CUSTOMER
 # =========================================================
 
 @app.route(
@@ -214,6 +252,9 @@ def edit_customer(customer_id):
 
     if not session.get("admin_logged_in"):
         return redirect("/login")
+
+    db = None
+    cursor = None
 
     try:
 
@@ -234,7 +275,6 @@ def edit_customer(customer_id):
             notes = request.form.get("notes")
             follow_up_date = request.form.get("follow_up_date")
 
-            # Convert empty date to NULL
             if not follow_up_date:
                 follow_up_date = None
 
@@ -261,9 +301,6 @@ def edit_customer(customer_id):
             ))
 
             db.commit()
-
-            cursor.close()
-            db.close()
 
             print(
                 f"CUSTOMER UPDATED: {customer_id} ✅"
@@ -293,9 +330,6 @@ def edit_customer(customer_id):
 
         customer = cursor.fetchone()
 
-        cursor.close()
-        db.close()
-
         if customer is None:
             return "Customer not found", 404
 
@@ -308,15 +342,19 @@ def edit_customer(customer_id):
 
         print("EDIT CUSTOMER ERROR:", e)
 
-        return f"""
+        return """
         <h2 style="text-align:center;margin-top:100px;">
             Edit Customer Error ❌
         </h2>
-
-        <p style="text-align:center;">
-            {e}
-        </p>
         """
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if db:
+            db.close()
 
 
 # =========================================================
@@ -341,6 +379,9 @@ def update_status():
     if status not in allowed_statuses:
         return redirect("/dashboard")
 
+    db = None
+    cursor = None
+
     try:
 
         db = get_db_connection()
@@ -357,9 +398,6 @@ def update_status():
 
         db.commit()
 
-        cursor.close()
-        db.close()
-
         print(
             f"STATUS UPDATED: Customer {customer_id} -> {status} ✅"
         )
@@ -367,6 +405,14 @@ def update_status():
     except Exception as e:
 
         print("STATUS UPDATE ERROR:", e)
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if db:
+            db.close()
 
     return redirect("/dashboard")
 
@@ -383,6 +429,9 @@ def delete_customer():
 
     customer_id = request.form.get("customer_id")
 
+    db = None
+    cursor = None
+
     try:
 
         db = get_db_connection()
@@ -395,9 +444,6 @@ def delete_customer():
 
         db.commit()
 
-        cursor.close()
-        db.close()
-
         print(
             f"CUSTOMER DELETED: {customer_id} ✅"
         )
@@ -405,6 +451,14 @@ def delete_customer():
     except Exception as e:
 
         print("DELETE CUSTOMER ERROR:", e)
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if db:
+            db.close()
 
     return redirect("/dashboard")
 
@@ -435,6 +489,9 @@ def contact():
         # SAVE TO MYSQL
         # -------------------------------------------------
 
+        db = None
+        cursor = None
+
         try:
 
             db = get_db_connection()
@@ -460,14 +517,19 @@ def contact():
 
             db.commit()
 
-            cursor.close()
-            db.close()
-
             print("MYSQL: CUSTOMER REQUEST SAVED ✅")
 
         except Exception as e:
 
             print("MYSQL ERROR:", e)
+
+        finally:
+
+            if cursor:
+                cursor.close()
+
+            if db:
+                db.close()
 
         # -------------------------------------------------
         # SEND EMAIL
@@ -516,7 +578,9 @@ Requirements:
 
             else:
 
-                print("GMAIL_APP_PASSWORD is not set.")
+                print(
+                    "GMAIL_APP_PASSWORD is not set."
+                )
 
         except Exception as e:
 
@@ -583,22 +647,30 @@ Requirements:
 
 @app.route("/demo/restaurant")
 def restaurant_demo():
-    return render_template("demos/restaurant.html")
+    return render_template(
+        "demos/restaurant.html"
+    )
 
 
 @app.route("/demo/business")
 def business_demo():
-    return render_template("demos/business.html")
+    return render_template(
+        "demos/business.html"
+    )
 
 
 @app.route("/demo/portfolio")
 def portfolio_demo():
-    return render_template("demos/portfolio.html")
+    return render_template(
+        "demos/portfolio.html"
+    )
 
 
 @app.route("/demo/ecommerce")
 def ecommerce_demo():
-    return render_template("demos/ecommerce.html")
+    return render_template(
+        "demos/ecommerce.html"
+    )
 
 
 # =========================================================
@@ -606,4 +678,13 @@ def ecommerce_demo():
 # =========================================================
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    port = int(
+        os.environ.get("PORT", 5000)
+    )
+
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
+    )
