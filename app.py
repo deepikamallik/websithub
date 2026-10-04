@@ -22,7 +22,7 @@ app.secret_key = os.environ.get(
 # =========================================================
 
 def get_db_connection():
-    url = os.environ.get("MYSQL_DATABASE_URL")
+    url = os.environ.get("MYSQL_PUBLIC_URL")
     if url:
         # Parse the URL to extract connection parameters
         import urllib.parse as urlparse
