@@ -22,8 +22,21 @@ app.secret_key = os.environ.get(
 # =========================================================
 
 def get_db_connection():
+    url = os.environ.get("MYSQL_DATABASE_URL")
+    if url:
+        # Parse the URL to extract connection parameters
+        import urllib.parse as urlparse
+        parsed_url = urlparse.urlparse(url)
+        return mysql.connector.connect(
+            host=parsed_url.hostname,
+            port=parsed_url.port or 3306,
+            user=parsed_url.username,
+            password=parsed_url.password,
+            database=parsed_url.path.lstrip('/')
+        )
 
     return mysql.connector.connect(
+
         host=os.environ.get("MYSQLHOST"),
         port=int(os.environ.get("MYSQLPORT", "3306")),
         user=os.environ.get("MYSQLUSER"),
