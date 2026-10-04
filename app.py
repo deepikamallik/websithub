@@ -34,7 +34,6 @@ def get_db_connection():
             password=parsed_url.password,
             database=parsed_url.path.lstrip('/')
         )
-
     return mysql.connector.connect(
 
         host=os.environ.get("MYSQLHOST"),
