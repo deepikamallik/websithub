@@ -35,12 +35,13 @@ def get_db_connection():
             database=parsed_url.path.lstrip('/')
         )
     return mysql.connector.connect(
-
         host=os.environ.get("MYSQLHOST"),
-        port=int(os.environ.get("MYSQLPORT", "20891")),
+        port=int(os.environ.get("MYSQLPORT", "43554")),
         user=os.environ.get("MYSQLUSER"),
         password=os.environ.get("MYSQLPASSWORD"),
-        database=os.environ.get("MYSQLDATABASE")
+        database=os.environ.get("MYSQLDATABASE"),
+        connection_timeout=30,
+        autocommit=False
     )
 
 
