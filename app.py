@@ -29,14 +29,14 @@ def get_db_connection():
         parsed_url = urlparse.urlparse(url)
         return mysql.connector.connect(
             host=parsed_url.hostname,
-            port=parsed_url.port or 43554,
+            port=parsed_url.port or 43728,
             user=parsed_url.username,
             password=parsed_url.password,
             database=parsed_url.path.lstrip('/')
         )
     return mysql.connector.connect(
         host=os.environ.get("MYSQLHOST"),
-        port=int(os.environ.get("MYSQLPORT", "43554")),
+        port=int(os.environ.get("MYSQLPORT", "43728")),
         user=os.environ.get("MYSQLUSER"),
         password=os.environ.get("MYSQLPASSWORD"),
         database=os.environ.get("MYSQLDATABASE"),
