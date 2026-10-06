@@ -3,6 +3,7 @@ import mysql.connector
 import os
 import smtplib
 from email.message import EmailMessage
+import resend
 from datetime import datetime, date
 
 app = Flask(__name__)
@@ -65,17 +66,42 @@ def get_db_connection():
 
 
 
-# =========================================================
-# EMAIL SETTINGS
-# =========================================================
+# -------------------------------------------------
+# SEND EMAIL USING RESEND
+# -------------------------------------------------
 
-MY_EMAIL = os.environ.get(
-    "MY_EMAIL",
-    "deepikamallik2006@gmail.com"
-)
+try:
 
-APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
+    resend.api_key = os.environ.get("RESEND_API_KEY")
 
+    if resend.api_key:
+
+        resend.Emails.send({
+            "from": "WebsiteHub <onboarding@resend.dev>",
+            "to": [MY_EMAIL],
+            "subject": f"New Website Request - {name}",
+            "text": f"""
+New Website Request
+
+Name: {name}
+Email: {email}
+Phone: {phone}
+Website Type: {website_type}
+
+Requirements:
+{message}
+"""
+        })
+
+        print("EMAIL SENT SUCCESSFULLY ✅")
+
+    else:
+
+        print("RESEND_API_KEY is not set.")
+
+except Exception as e:
+
+    print("EMAIL ERROR:", e)
 
 # =========================================================
 # HOME
