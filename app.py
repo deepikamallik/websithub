@@ -22,27 +22,47 @@ app.secret_key = os.environ.get(
 # =========================================================
 
 def get_db_connection():
-    url = os.environ.get("MYSQL_PUBLIC_URL")
-    if url:
-        # Parse the URL to extract connection parameters
-        import urllib.parse as urlparse
-        parsed_url = urlparse.urlparse(url)
-        return mysql.connector.connect(
-            host=parsed_url.hostname,
-            port=parsed_url.port or 43728,
-            user=parsed_url.username,
-            password=parsed_url.password,
-            database=parsed_url.path.lstrip('/')
+    """
+    Connect to Railway MySQL using the five Render environment variables.
+
+    We intentionally do NOT use MYSQL_PUBLIC_URL here. An old/malformed
+    MYSQL_PUBLIC_URL can cause an unintended localhost connection and
+    produce:
+        1045 Access denied for user ''@'localhost'
+    """
+
+    host = os.environ.get("MYSQLHOST")
+    port = os.environ.get("MYSQLPORT")
+    user = os.environ.get("MYSQLUSER")
+    password = os.environ.get("MYSQLPASSWORD")
+    database = os.environ.get("MYSQLDATABASE")
+
+    missing = [
+        name for name, value in {
+            "MYSQLHOST": host,
+            "MYSQLPORT": port,
+            "MYSQLUSER": user,
+            "MYSQLPASSWORD": password,
+            "MYSQLDATABASE": database,
+        }.items()
+        if not value
+    ]
+
+    if missing:
+        raise RuntimeError(
+            "Missing MySQL environment variables: " + ", ".join(missing)
         )
+
     return mysql.connector.connect(
-        host=os.environ.get("MYSQLHOST"),
-        port=int(os.environ.get("MYSQLPORT", "3306")),
-        user=os.environ.get("MYSQLUSER"),
-        password=os.environ.get("MYSQLPASSWORD"),
-        database=os.environ.get("MYSQLDATABASE"),
+        host=host,
+        port=int(port),
+        user=user,
+        password=password,
+        database=database,
         connection_timeout=30,
         autocommit=False
     )
+
 
 
 # =========================================================
@@ -577,7 +597,8 @@ Requirements:
 
                 with smtplib.SMTP_SSL(
                     "smtp.gmail.com",
-                    465
+                    465,
+                    timeout=15
                 ) as smtp:
 
                     smtp.login(
