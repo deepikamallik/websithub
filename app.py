@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
 import os
-import smtplib
-from email.message import EmailMessage
 import resend
 from datetime import datetime, date
 
@@ -24,12 +22,8 @@ app.secret_key = os.environ.get(
 
 def get_db_connection():
     """
-    Connect to Railway MySQL using the five Render environment variables.
-
-    We intentionally do NOT use MYSQL_PUBLIC_URL here. An old/malformed
-    MYSQL_PUBLIC_URL can cause an unintended localhost connection and
-    produce:
-        1045 Access denied for user ''@'localhost'
+    Connect to Railway MySQL using the five Render
+    environment variables.
     """
 
     host = os.environ.get("MYSQLHOST")
@@ -39,7 +33,8 @@ def get_db_connection():
     database = os.environ.get("MYSQLDATABASE")
 
     missing = [
-        name for name, value in {
+        name
+        for name, value in {
             "MYSQLHOST": host,
             "MYSQLPORT": port,
             "MYSQLUSER": user,
@@ -51,7 +46,8 @@ def get_db_connection():
 
     if missing:
         raise RuntimeError(
-            "Missing MySQL environment variables: " + ", ".join(missing)
+            "Missing MySQL environment variables: "
+            + ", ".join(missing)
         )
 
     return mysql.connector.connect(
@@ -63,7 +59,6 @@ def get_db_connection():
         connection_timeout=30,
         autocommit=False
     )
-
 
 
 # =========================================================
@@ -180,29 +175,33 @@ def dashboard():
         """)
 
         customer_requests = cursor.fetchall()
+
         total_customers = len(customer_requests)
 
         pending_count = sum(
-    1 for r in customer_requests if r[6] == "Pending"
-)
+            1 for r in customer_requests
+            if r[6] == "Pending"
+        )
 
         contacted_count = sum(
-    1 for r in customer_requests if r[6] == "Contacted"
-)
+            1 for r in customer_requests
+            if r[6] == "Contacted"
+        )
 
         completed_count = sum(
-    1 for r in customer_requests if r[6] == "Completed"
-)   
+            1 for r in customer_requests
+            if r[6] == "Completed"
+        )
 
         return render_template(
-    "dashboard.html",
-    requests=customer_requests,
-    total_customers=len(customer_requests),
-    pending_count=sum(1 for r in customer_requests if r[6] == "Pending"),
-    contacted_count=sum(1 for r in customer_requests if r[6] == "Contacted"),
-    completed_count=sum(1 for r in customer_requests if r[6] == "Completed"),
-    current_datetime=datetime.now()
-)
+            "dashboard.html",
+            requests=customer_requests,
+            total_customers=total_customers,
+            pending_count=pending_count,
+            contacted_count=contacted_count,
+            completed_count=completed_count,
+            current_datetime=datetime.now()
+        )
 
     except Exception as e:
 
@@ -546,29 +545,30 @@ def contact():
 
             db = get_db_connection()
             cursor = db.cursor()
-            
+
             created_at = datetime.now()
+
             cursor.execute("""
-     INSERT INTO customer_requests
-    (
-        name,
-        email,
-        phone,
-        website_type,
-        message,
-        status,
-        created_at
-    )
-    VALUES (%s, %s, %s, %s, %s, %s, %s)
-""", (
-    name,
-    email,
-    phone,
-    website_type,
-    message,
-    "Pending",
-    created_at
-))
+                INSERT INTO customer_requests
+                (
+                    name,
+                    email,
+                    phone,
+                    website_type,
+                    message,
+                    status,
+                    created_at
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (
+                name,
+                email,
+                phone,
+                website_type,
+                message,
+                "Pending",
+                created_at
+            ))
 
             db.commit()
 
@@ -587,48 +587,49 @@ def contact():
                 db.close()
 
         # -------------------------------------------------
-        # SEND EMAIL
+        # SEND EMAIL USING RESEND
         # -------------------------------------------------
 
-        # -------------------------------------------------
-# SEND EMAIL USING RESEND
-# -------------------------------------------------
-try:
+        try:
 
-    resend.api_key = os.environ.get("RESEND_API_KEY")
+            resend.api_key = os.environ.get(
+                "RESEND_API_KEY"
+            )
 
-    if resend.api_key:
+            if resend.api_key:
 
-        resend.Emails.send({
-            "from": "WebsiteHub <onboarding@resend.dev>",
-            "to": [MY_EMAIL],
-            "subject": f"New Website Request - {name}",
-            "text": f"""
-     New Website Request
+                resend.Emails.send({
+                    "from": "WebsiteHub <onboarding@resend.dev>",
+                    "to": [MY_EMAIL],
+                    "subject": f"New Website Request - {name}",
+                    "text": f"""
+New Website Request
 
-    Name: {name}
-    Email: {email}
-    Phone: {phone}
-    Website Type: {website_type}
+Name: {name}
+Email: {email}
+Phone: {phone}
+Website Type: {website_type}
 
 Requirements:
 {message}
 """
-        })
+                })
 
-        print("EMAIL SENT SUCCESSFULLY ✅")
+                print("EMAIL SENT SUCCESSFULLY ✅")
 
-    else:
-        print("RESEND_API_KEY is not set.")
+            else:
 
-except Exception as e:
-    print("EMAIL ERROR:", e)
+                print("RESEND_API_KEY is not set.")
+
+        except Exception as e:
+
+            print("EMAIL ERROR:", e)
 
         # -------------------------------------------------
-        # SUCCESS
+        # SUCCESS PAGE
         # -------------------------------------------------
 
-return """
+        return """
         <!DOCTYPE html>
 
         <html>
@@ -675,7 +676,12 @@ return """
 
         </html>
         """
-return render_template("contact.html")
+
+    # -------------------------------------------------
+    # GET / CONTACT PAGE
+    # -------------------------------------------------
+
+    return render_template("contact.html")
 
 
 # =========================================================
@@ -684,6 +690,7 @@ return render_template("contact.html")
 
 @app.route("/demo/restaurant")
 def restaurant_demo():
+
     return render_template(
         "demos/restaurant.html"
     )
@@ -691,6 +698,7 @@ def restaurant_demo():
 
 @app.route("/demo/business")
 def business_demo():
+
     return render_template(
         "demos/business.html"
     )
@@ -698,6 +706,7 @@ def business_demo():
 
 @app.route("/demo/portfolio")
 def portfolio_demo():
+
     return render_template(
         "demos/portfolio.html"
     )
@@ -705,6 +714,7 @@ def portfolio_demo():
 
 @app.route("/demo/ecommerce")
 def ecommerce_demo():
+
     return render_template(
         "demos/ecommerce.html"
     )
