@@ -3,7 +3,7 @@ import mysql.connector
 import os
 import smtplib
 from email.message import EmailMessage
-
+from datetime import datetime, date
 
 app = Flask(__name__)
 
@@ -183,9 +183,14 @@ def dashboard():
         customer_requests = cursor.fetchall()
 
         return render_template(
-            "dashboard.html",
-            requests=customer_requests
-        )
+    "dashboard.html",
+    requests=customer_requests,
+    total_customers=total_customers,
+    pending_count=pending_count,
+    contacted_count=contacted_count,
+    completed_count=completed_count,
+    current_datetime=datetime.now()
+)
 
     except Exception as e:
 
