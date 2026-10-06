@@ -66,42 +66,15 @@ def get_db_connection():
 
 
 
-# -------------------------------------------------
-# SEND EMAIL USING RESEND
-# -------------------------------------------------
+# =========================================================
+# EMAIL SETTINGS
+# =========================================================
 
-try:
+MY_EMAIL = os.environ.get(
+    "MY_EMAIL",
+    "deepikamallik2006@gmail.com"
+)
 
-    resend.api_key = os.environ.get("RESEND_API_KEY")
-
-    if resend.api_key:
-
-        resend.Emails.send({
-            "from": "WebsiteHub <onboarding@resend.dev>",
-            "to": [MY_EMAIL],
-            "subject": f"New Website Request - {name}",
-            "text": f"""
-New Website Request
-
-Name: {name}
-Email: {email}
-Phone: {phone}
-Website Type: {website_type}
-
-Requirements:
-{message}
-"""
-        })
-
-        print("EMAIL SENT SUCCESSFULLY ✅")
-
-    else:
-
-        print("RESEND_API_KEY is not set.")
-
-except Exception as e:
-
-    print("EMAIL ERROR:", e)
 
 # =========================================================
 # HOME
@@ -617,63 +590,45 @@ def contact():
         # SEND EMAIL
         # -------------------------------------------------
 
-        try:
+        # -------------------------------------------------
+# SEND EMAIL USING RESEND
+# -------------------------------------------------
+try:
 
-            if APP_PASSWORD:
+    resend.api_key = os.environ.get("RESEND_API_KEY")
 
-                msg = EmailMessage()
+    if resend.api_key:
 
-                msg["Subject"] = (
-                    f"New Website Request - {name}"
-                )
+        resend.Emails.send({
+            "from": "WebsiteHub <onboarding@resend.dev>",
+            "to": [MY_EMAIL],
+            "subject": f"New Website Request - {name}",
+            "text": f"""
+     New Website Request
 
-                msg["From"] = MY_EMAIL
-                msg["To"] = MY_EMAIL
-
-                msg.set_content(
-                    f"""
-New Website Request
-
-Name: {name}
-Email: {email}
-Phone: {phone}
-Website Type: {website_type}
+    Name: {name}
+    Email: {email}
+    Phone: {phone}
+    Website Type: {website_type}
 
 Requirements:
 {message}
 """
-                )
+        })
 
-                with smtplib.SMTP_SSL(
-                    "smtp.gmail.com",
-                    465,
-                    timeout=15
-                ) as smtp:
+        print("EMAIL SENT SUCCESSFULLY ✅")
 
-                    smtp.login(
-                        MY_EMAIL,
-                        APP_PASSWORD
-                    )
+    else:
+        print("RESEND_API_KEY is not set.")
 
-                    smtp.send_message(msg)
-
-                print("EMAIL SENT SUCCESSFULLY ✅")
-
-            else:
-
-                print(
-                    "GMAIL_APP_PASSWORD is not set."
-                )
-
-        except Exception as e:
-
-            print("EMAIL ERROR:", e)
+except Exception as e:
+    print("EMAIL ERROR:", e)
 
         # -------------------------------------------------
         # SUCCESS
         # -------------------------------------------------
 
-        return """
+return """
         <!DOCTYPE html>
 
         <html>
@@ -720,8 +675,7 @@ Requirements:
 
         </html>
         """
-
-    return render_template("contact.html")
+return render_template("contact.html")
 
 
 # =========================================================
