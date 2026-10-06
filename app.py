@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, session
-from datetime import date
 import mysql.connector
 import os
 import smtplib
 from email.message import EmailMessage
+from datetime import datetime, date
 
 
 app = Flask(__name__)
+
 
 # =========================================================
 # FLASK SECRET KEY
@@ -23,59 +24,46 @@ app.secret_key = os.environ.get(
 # =========================================================
 
 def get_db_connection():
-    """
-    Connect to Railway MySQL using the five Render environment variables.
 
-    We intentionally do NOT use MYSQL_PUBLIC_URL here. An old/malformed
-    MYSQL_PUBLIC_URL can cause an unintended localhost connection and
-    produce:
-        1045 Access denied for user ''@'localhost'
-    """
-
-    host = os.environ.get("MYSQLHOST")
-    port = os.environ.get("MYSQLPORT")
-    user = os.environ.get("MYSQLUSER")
-    password = os.environ.get("MYSQLPASSWORD")
-    database = os.environ.get("MYSQLDATABASE")
+    required_vars = [
+        "MYSQLHOST",
+        "MYSQLPORT",
+        "MYSQLUSER",
+        "MYSQLPASSWORD",
+        "MYSQLDATABASE"
+    ]
 
     missing = [
-        name for name, value in {
-            "MYSQLHOST": host,
-            "MYSQLPORT": port,
-            "MYSQLUSER": user,
-            "MYSQLPASSWORD": password,
-            "MYSQLDATABASE": database,
-        }.items()
-        if not value
+        var for var in required_vars
+        if not os.environ.get(var)
     ]
 
     if missing:
-        raise RuntimeError(
-            "Missing MySQL environment variables: " + ", ".join(missing)
+        raise Exception(
+            "Missing MySQL environment variables: "
+            + ", ".join(missing)
         )
 
     return mysql.connector.connect(
-        host=host,
-        port=int(port),
-        user=user,
-        password=password,
-        database=database,
+        host=os.environ.get("MYSQLHOST"),
+        port=int(os.environ.get("MYSQLPORT")),
+        user=os.environ.get("MYSQLUSER"),
+        password=os.environ.get("MYSQLPASSWORD"),
+        database=os.environ.get("MYSQLDATABASE"),
         connection_timeout=30,
         autocommit=False
     )
-
 
 
 # =========================================================
 # EMAIL SETTINGS
 # =========================================================
 
-MY_EMAIL = os.environ.get(
-    "MY_EMAIL",
-    "deepikamallik2006@gmail.com"
-)
+MY_EMAIL = os.environ.get("MY_EMAIL")
 
-APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
+APP_PASSWORD = os.environ.get(
+    "GMAIL_APP_PASSWORD"
+)
 
 
 # =========================================================
@@ -84,6 +72,7 @@ APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
 
 @app.route("/")
 def home():
+
     return render_template("index.html")
 
 
@@ -93,6 +82,7 @@ def home():
 
 @app.route("/websites")
 def websites():
+
     return render_template("websites.html")
 
 
@@ -100,7 +90,10 @@ def websites():
 # ADMIN LOGIN
 # =========================================================
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
 def login():
 
     if request.method == "POST":
@@ -142,7 +135,10 @@ def login():
 @app.route("/logout")
 def logout():
 
-    session.pop("admin_logged_in", None)
+    session.pop(
+        "admin_logged_in",
+        None
+    )
 
     return redirect("/login")
 
@@ -178,27 +174,79 @@ def dashboard():
                 notes,
                 follow_up_date
             FROM customer_requests
-            ORDER BY created_at DESC
+            ORDER BY
+                created_at DESC,
+                id DESC
         """)
 
         customer_requests = cursor.fetchall()
+
+        # ---------------------------------------------
+        # COUNTS
+        # ---------------------------------------------
+
+        total_customers = len(customer_requests)
+
+        pending_count = sum(
+            1
+            for r in customer_requests
+            if (r[6] or "Pending") == "Pending"
+        )
+
+        contacted_count = sum(
+            1
+            for r in customer_requests
+            if r[6] == "Contacted"
+        )
+
+        completed_count = sum(
+            1
+            for r in customer_requests
+            if r[6] == "Completed"
+        )
+
         return render_template(
-    "dashboard.html",
-    requests=customer_requests,
-    current_date=date.today()
-)
+            "dashboard.html",
+            requests=customer_requests,
+            total_customers=total_customers,
+            pending_count=pending_count,
+            contacted_count=contacted_count,
+            completed_count=completed_count,
+            current_datetime=datetime.now()
+        )
+
     except Exception as e:
 
-        print("DASHBOARD MYSQL ERROR:", e)
+        print(
+            "DASHBOARD MYSQL ERROR:",
+            e
+        )
 
         return """
-        <h2 style="text-align:center;margin-top:100px;">
-            Dashboard Error ❌
-        </h2>
+        <div style="
+            font-family:Arial;
+            text-align:center;
+            padding:80px;
+        ">
 
-        <p style="text-align:center;">
-            Please check the database connection.
-        </p>
+            <h2>
+                Dashboard Error ❌
+            </h2>
+
+            <p>
+                Please check your Railway MySQL
+                connection and Render environment variables.
+            </p>
+
+            <p style="color:#777;">
+                Error: """ + str(e) + """
+            </p>
+
+            <a href="/login">
+                Back to Login
+            </a>
+
+        </div>
         """
 
     finally:
@@ -256,7 +304,10 @@ def customer_details(customer_id):
 
     except Exception as e:
 
-        print("CUSTOMER DETAILS ERROR:", e)
+        print(
+            "CUSTOMER DETAILS ERROR:",
+            e
+        )
 
         return """
         <h2 style="text-align:center;margin-top:100px;">
@@ -294,25 +345,62 @@ def edit_customer(customer_id):
         db = get_db_connection()
         cursor = db.cursor()
 
-        # -------------------------------------------------
-        # SAVE CUSTOMER
-        # -------------------------------------------------
+        # ---------------------------------------------
+        # UPDATE CUSTOMER
+        # ---------------------------------------------
 
         if request.method == "POST":
 
             name = request.form.get("name")
             email = request.form.get("email")
             phone = request.form.get("phone")
-            website_type = request.form.get("website_type")
-            message = request.form.get("message")
-            notes = request.form.get("notes")
-            follow_up_date = request.form.get("follow_up_date")
+            website_type = request.form.get(
+                "website_type"
+            )
+            message = request.form.get(
+                "message"
+            )
+            notes = request.form.get(
+                "notes"
+            )
 
-            if not follow_up_date:
-                follow_up_date = None
+            follow_up_date = request.form.get(
+                "follow_up_date"
+            )
+
+            follow_up_time = request.form.get(
+                "follow_up_time"
+            )
+
+            # -----------------------------------------
+            # COMBINE DATE + TIME
+            # -----------------------------------------
+
+            follow_up_datetime = None
+
+            if (
+                follow_up_date
+                and follow_up_time
+            ):
+
+                try:
+
+                    follow_up_datetime = datetime.strptime(
+                        f"{follow_up_date} {follow_up_time}",
+                        "%Y-%m-%d %H:%M"
+                    )
+
+                except ValueError:
+
+                    follow_up_datetime = None
+
+            # -----------------------------------------
+            # UPDATE DATABASE
+            # -----------------------------------------
 
             cursor.execute("""
                 UPDATE customer_requests
+
                 SET
                     name = %s,
                     email = %s,
@@ -321,7 +409,9 @@ def edit_customer(customer_id):
                     message = %s,
                     notes = %s,
                     follow_up_date = %s
+
                 WHERE id = %s
+
             """, (
                 name,
                 email,
@@ -329,21 +419,24 @@ def edit_customer(customer_id):
                 website_type,
                 message,
                 notes,
-                follow_up_date,
+                follow_up_datetime,
                 customer_id
             ))
 
             db.commit()
 
             print(
-                f"CUSTOMER UPDATED: {customer_id} ✅"
+                f"CUSTOMER UPDATED: "
+                f"{customer_id} ✅"
             )
 
-            return redirect("/dashboard")
+            return redirect(
+                "/dashboard"
+            )
 
-        # -------------------------------------------------
+        # ---------------------------------------------
         # GET CUSTOMER
-        # -------------------------------------------------
+        # ---------------------------------------------
 
         cursor.execute("""
             SELECT
@@ -373,10 +466,16 @@ def edit_customer(customer_id):
 
     except Exception as e:
 
-        print("EDIT CUSTOMER ERROR:", e)
+        print(
+            "EDIT CUSTOMER ERROR:",
+            e
+        )
 
         return """
-        <h2 style="text-align:center;margin-top:100px;">
+        <h2 style="
+            text-align:center;
+            margin-top:100px;
+        ">
             Edit Customer Error ❌
         </h2>
         """
@@ -394,14 +493,22 @@ def edit_customer(customer_id):
 # UPDATE CUSTOMER STATUS
 # =========================================================
 
-@app.route("/update-status", methods=["POST"])
+@app.route(
+    "/update-status",
+    methods=["POST"]
+)
 def update_status():
 
     if not session.get("admin_logged_in"):
         return redirect("/login")
 
-    customer_id = request.form.get("customer_id")
-    status = request.form.get("status")
+    customer_id = request.form.get(
+        "customer_id"
+    )
+
+    status = request.form.get(
+        "status"
+    )
 
     allowed_statuses = [
         "Pending",
@@ -422,8 +529,11 @@ def update_status():
 
         cursor.execute("""
             UPDATE customer_requests
+
             SET status = %s
+
             WHERE id = %s
+
         """, (
             status,
             customer_id
@@ -432,12 +542,17 @@ def update_status():
         db.commit()
 
         print(
-            f"STATUS UPDATED: Customer {customer_id} -> {status} ✅"
+            f"STATUS UPDATED: "
+            f"Customer {customer_id} "
+            f"-> {status} ✅"
         )
 
     except Exception as e:
 
-        print("STATUS UPDATE ERROR:", e)
+        print(
+            "STATUS UPDATE ERROR:",
+            e
+        )
 
     finally:
 
@@ -454,13 +569,18 @@ def update_status():
 # DELETE CUSTOMER
 # =========================================================
 
-@app.route("/delete-customer", methods=["POST"])
+@app.route(
+    "/delete-customer",
+    methods=["POST"]
+)
 def delete_customer():
 
     if not session.get("admin_logged_in"):
         return redirect("/login")
 
-    customer_id = request.form.get("customer_id")
+    customer_id = request.form.get(
+        "customer_id"
+    )
 
     db = None
     cursor = None
@@ -472,18 +592,24 @@ def delete_customer():
 
         cursor.execute("""
             DELETE FROM customer_requests
+
             WHERE id = %s
+
         """, (customer_id,))
 
         db.commit()
 
         print(
-            f"CUSTOMER DELETED: {customer_id} ✅"
+            f"CUSTOMER DELETED: "
+            f"{customer_id} ✅"
         )
 
     except Exception as e:
 
-        print("DELETE CUSTOMER ERROR:", e)
+        print(
+            "DELETE CUSTOMER ERROR:",
+            e
+        )
 
     finally:
 
@@ -497,37 +623,144 @@ def delete_customer():
 
 
 # =========================================================
-# CONTACT
+# CONTACT / CUSTOMER REQUEST
 # =========================================================
 
-@app.route("/contact", methods=["GET", "POST"])
+@app.route(
+    "/contact",
+    methods=["GET", "POST"]
+)
 def contact():
 
     if request.method == "POST":
 
-        name = request.form.get("name")
-        email = request.form.get("email")
-        phone = request.form.get("phone")
-        website_type = request.form.get("website_type")
-        message = request.form.get("message")
+        # ---------------------------------------------
+        # BASIC INFORMATION
+        # ---------------------------------------------
 
-        print("\n******** NEW WEBSITE REQUEST ********")
+        name = request.form.get(
+            "name",
+            ""
+        ).strip()
+
+        email = request.form.get(
+            "email",
+            ""
+        ).strip()
+
+        phone = request.form.get(
+            "phone",
+            ""
+        ).strip()
+
+        website_type = request.form.get(
+            "website_type",
+            ""
+        ).strip()
+
+        message = request.form.get(
+            "message",
+            ""
+        ).strip()
+
+        # ---------------------------------------------
+        # CRM INFORMATION
+        # ---------------------------------------------
+
+        notes = request.form.get(
+            "notes",
+            ""
+        ).strip()
+
+        follow_up_date = request.form.get(
+            "follow_up_date",
+            ""
+        ).strip()
+
+        follow_up_time = request.form.get(
+            "follow_up_time",
+            ""
+        ).strip()
+
+        # ---------------------------------------------
+        # AUTOMATIC VALUES
+        # ---------------------------------------------
+
+        status = "Pending"
+
+        created_at = datetime.now()
+
+        follow_up_datetime = None
+
+        if (
+            follow_up_date
+            and follow_up_time
+        ):
+
+            try:
+
+                follow_up_datetime = datetime.strptime(
+                    f"{follow_up_date} {follow_up_time}",
+                    "%Y-%m-%d %H:%M"
+                )
+
+            except ValueError:
+
+                follow_up_datetime = None
+
+        print(
+            "\n******** NEW WEBSITE REQUEST ********"
+        )
+
         print("Name:", name)
         print("Email:", email)
         print("Phone:", phone)
-        print("Website Type:", website_type)
-        print("Requirements:", message)
+        print(
+            "Website Type:",
+            website_type
+        )
+        print(
+            "Requirements:",
+            message
+        )
+        print(
+            "Status:",
+            status
+        )
+        print(
+            "Request Date:",
+            created_at.strftime(
+                "%Y-%m-%d"
+            )
+        )
+        print(
+            "Request Time:",
+            created_at.strftime(
+                "%H:%M:%S"
+            )
+        )
+        print(
+            "Follow-up:",
+            follow_up_datetime
+        )
+        print(
+            "Notes:",
+            notes
+        )
 
-        # -------------------------------------------------
+        # ---------------------------------------------
         # SAVE TO MYSQL
-        # -------------------------------------------------
+        # ---------------------------------------------
 
         db = None
         cursor = None
 
+        mysql_saved = False
+
         try:
 
             db = get_db_connection()
+
             cursor = db.cursor()
 
             cursor.execute("""
@@ -537,24 +770,56 @@ def contact():
                     email,
                     phone,
                     website_type,
-                    message
+                    message,
+                    status,
+                    created_at,
+                    notes,
+                    follow_up_date
                 )
-                VALUES (%s, %s, %s, %s, %s)
+
+                VALUES
+                (
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s
+                )
+
             """, (
                 name,
                 email,
                 phone,
                 website_type,
-                message
+                message,
+                status,
+                created_at,
+                notes,
+                follow_up_datetime
             ))
 
             db.commit()
 
-            print("MYSQL: CUSTOMER REQUEST SAVED ✅")
+            mysql_saved = True
+
+            print(
+                "MYSQL: "
+                "CUSTOMER REQUEST SAVED ✅"
+            )
 
         except Exception as e:
 
-            print("MYSQL ERROR:", e)
+            if db:
+                db.rollback()
+
+            print(
+                "MYSQL ERROR:",
+                e
+            )
 
         finally:
 
@@ -564,13 +829,30 @@ def contact():
             if db:
                 db.close()
 
-        # -------------------------------------------------
+        # ---------------------------------------------
         # SEND EMAIL
-        # -------------------------------------------------
+        # ---------------------------------------------
 
         try:
 
-            if APP_PASSWORD:
+            if (
+                MY_EMAIL
+                and APP_PASSWORD
+            ):
+
+                if follow_up_datetime:
+
+                    follow_up_display = (
+                        follow_up_datetime.strftime(
+                            "%d %b %Y, %I:%M %p"
+                        )
+                    )
+
+                else:
+
+                    follow_up_display = (
+                        "Not scheduled"
+                    )
 
                 msg = EmailMessage()
 
@@ -579,26 +861,48 @@ def contact():
                 )
 
                 msg["From"] = MY_EMAIL
+
                 msg["To"] = MY_EMAIL
 
                 msg.set_content(
                     f"""
-New Website Request
+New WebsiteHub Customer Request
 
-Name: {name}
-Email: {email}
-Phone: {phone}
-Website Type: {website_type}
+Customer Name:
+{name}
+
+Email:
+{email}
+
+Phone:
+{phone}
+
+Website Type:
+{website_type}
 
 Requirements:
 {message}
+
+Status:
+{status}
+
+Request Date:
+{created_at.strftime("%d %b %Y")}
+
+Request Time:
+{created_at.strftime("%I:%M %p")}
+
+Follow-up:
+{follow_up_display}
+
+Notes:
+{notes or "No notes added"}
 """
                 )
 
                 with smtplib.SMTP_SSL(
                     "smtp.gmail.com",
-                    465,
-                    timeout=15
+                    465
                 ) as smtp:
 
                     smtp.login(
@@ -606,73 +910,185 @@ Requirements:
                         APP_PASSWORD
                     )
 
-                    smtp.send_message(msg)
+                    smtp.send_message(
+                        msg
+                    )
 
-                print("EMAIL SENT SUCCESSFULLY ✅")
+                print(
+                    "EMAIL SENT SUCCESSFULLY ✅"
+                )
 
             else:
 
                 print(
-                    "GMAIL_APP_PASSWORD is not set."
+                    "Gmail environment variables "
+                    "are not configured."
                 )
 
         except Exception as e:
 
-            print("EMAIL ERROR:", e)
+            print(
+                "EMAIL ERROR:",
+                e
+            )
 
-        # -------------------------------------------------
-        # SUCCESS
-        # -------------------------------------------------
+        # ---------------------------------------------
+        # SUCCESS PAGE
+        # ---------------------------------------------
+
+        if mysql_saved:
+
+            return """
+            <!DOCTYPE html>
+
+            <html lang="en">
+
+            <head>
+
+                <meta charset="UTF-8">
+
+                <meta
+                    name="viewport"
+                    content="width=device-width,
+                    initial-scale=1.0"
+                >
+
+                <title>
+                    Request Sent | WebsiteHub
+                </title>
+
+                <style>
+
+                    * {
+                        box-sizing: border-box;
+                    }
+
+                    body {
+                        margin: 0;
+                        min-height: 100vh;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-family: Arial, sans-serif;
+                        background:
+                            linear-gradient(
+                                135deg,
+                                #f5eaff,
+                                #ffe8f5
+                            );
+                    }
+
+                    .success-box {
+                        width: 90%;
+                        max-width: 550px;
+                        padding: 45px 30px;
+                        text-align: center;
+                        background: white;
+                        border-radius: 24px;
+                        box-shadow:
+                            0 20px 60px
+                            rgba(100, 60, 140, 0.18);
+                    }
+
+                    .icon {
+                        font-size: 55px;
+                        margin-bottom: 15px;
+                    }
+
+                    h1 {
+                        color: #7146c1;
+                        margin-bottom: 12px;
+                    }
+
+                    p {
+                        color: #666;
+                        line-height: 1.7;
+                    }
+
+                    .btn {
+                        display: inline-block;
+                        margin-top: 20px;
+                        padding: 13px 28px;
+                        border-radius: 30px;
+                        background:
+                            linear-gradient(
+                                135deg,
+                                #9b6cff,
+                                #e88bc7
+                            );
+                        color: white;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+                <div class="success-box">
+
+                    <div class="icon">
+                        🎉
+                    </div>
+
+                    <h1>
+                        Request Sent Successfully!
+                    </h1>
+
+                    <p>
+                        Thank you for contacting
+                        WebsiteHub.
+                    </p>
+
+                    <p>
+                        Your request has been saved
+                        successfully and our team
+                        will contact you soon.
+                    </p>
+
+                    <a
+                        href="/"
+                        class="btn"
+                    >
+                        Back to Website
+                    </a>
+
+                </div>
+
+            </body>
+
+            </html>
+            """
 
         return """
-        <!DOCTYPE html>
-
-        <html>
-
-        <head>
-            <title>Request Sent</title>
-        </head>
-
-        <body style="
-            font-family:Arial;
+        <h2 style="
             text-align:center;
-            padding-top:100px;
-            background:#f5f3ff;
+            margin-top:100px;
         ">
+            Request could not be saved ❌
+        </h2>
 
-            <h1 style="color:#4f46e5;">
-                Request Sent Successfully! 🎉
-            </h1>
+        <p style="
+            text-align:center;
+            color:#777;
+        ">
+            Please try again later.
+        </p>
 
-            <p>
-                Thank you for contacting WebsiteHub.
-            </p>
-
-            <p>
-                Your request has been received.
-            </p>
-
-            <br>
-
-            <a
-                href="/"
-                style="
-                    text-decoration:none;
-                    background:#4f46e5;
-                    color:white;
-                    padding:12px 25px;
-                    border-radius:8px;
-                "
-            >
-                Back to Website
+        <div style="
+            text-align:center;
+        ">
+            <a href="/contact">
+                Return to Contact
             </a>
-
-        </body>
-
-        </html>
+        </div>
         """
 
-    return render_template("contact.html")
+    return render_template(
+        "contact.html"
+    )
 
 
 # =========================================================
@@ -681,6 +1097,7 @@ Requirements:
 
 @app.route("/demo/restaurant")
 def restaurant_demo():
+
     return render_template(
         "demos/restaurant.html"
     )
@@ -688,6 +1105,7 @@ def restaurant_demo():
 
 @app.route("/demo/business")
 def business_demo():
+
     return render_template(
         "demos/business.html"
     )
@@ -695,6 +1113,7 @@ def business_demo():
 
 @app.route("/demo/portfolio")
 def portfolio_demo():
+
     return render_template(
         "demos/portfolio.html"
     )
@@ -702,6 +1121,7 @@ def portfolio_demo():
 
 @app.route("/demo/ecommerce")
 def ecommerce_demo():
+
     return render_template(
         "demos/ecommerce.html"
     )
@@ -714,7 +1134,10 @@ def ecommerce_demo():
 if __name__ == "__main__":
 
     port = int(
-        os.environ.get("PORT", 5000)
+        os.environ.get(
+            "PORT",
+            5000
+        )
     )
 
     app.run(

@@ -2,180 +2,313 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contact | WebsiteHub</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Contact | WebsiteHub
+    </title>
 
     <style>
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #eef2ff, #fdf4ff);
-            color: #1f2937;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7efff,
+                    #fff0f8,
+                    #f2edff
+                );
+
+            color: #29233d;
             min-height: 100vh;
         }
 
         /* ================= NAVBAR ================= */
 
-        nav {
+        .navbar {
             width: 100%;
-            min-height: 72px;
-
+            padding: 18px 7%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
 
-            padding: 0 7%;
+            background:
+                rgba(255, 255, 255, 0.92);
 
-            background: #071a4d;
+            backdrop-filter: blur(15px);
 
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+            border-bottom:
+                1px solid rgba(130, 90, 170, 0.12);
 
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .logo {
-            color: white;
-            font-size: 27px;
+            font-size: 25px;
             font-weight: 800;
-        }
-
-        .logo span {
-            color: #38bdf8;
+            color: #7048b8;
+            text-decoration: none;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 25px;
         }
 
         .nav-links a {
-            color: #e0f2fe;
             text-decoration: none;
-
-            padding: 10px 15px;
-
-            border-radius: 25px;
-
-            font-size: 14px;
+            color: #4e4561;
             font-weight: 600;
-
-            transition: 0.3s ease;
+            transition: 0.3s;
         }
 
         .nav-links a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.12);
+            color: #a05dcc;
         }
 
-        .nav-links a.active {
-            color: white;
-            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+        .nav-login {
+            padding: 9px 18px;
+            border-radius: 25px;
+
+            color: white !important;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9b6cff,
+                    #df91ca
+                );
         }
 
-        /* ================= MAIN ================= */
+        /* ================= HERO ================= */
 
-        .contact-section {
-            min-height: calc(100vh - 72px);
+        .page-header {
+            text-align: center;
+            padding: 70px 20px 35px;
+        }
+
+        .page-header span {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 30px;
+
+            background: #f1e4ff;
+            color: #8150bc;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: 45px;
+            color: #33294b;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            max-width: 650px;
+            margin: auto;
+            color: #766d83;
+            line-height: 1.7;
+        }
+
+        /* ================= CONTACT AREA ================= */
+
+        .contact-wrapper {
+            width: 90%;
+            max-width: 1150px;
+            margin: 20px auto 70px;
+
+            display: grid;
+            grid-template-columns:
+                0.85fr 1.35fr;
+
+            gap: 30px;
+        }
+
+        /* ================= LEFT PANEL ================= */
+
+        .contact-info {
+            padding: 40px;
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #b995ed,
+                    #e9a9d1
+                );
+
+            color: white;
+
+            box-shadow:
+                0 20px 50px
+                rgba(124, 74, 170, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info::before {
+            content: "";
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            position: absolute;
+            right: -60px;
+            top: -60px;
+
+            background:
+                rgba(255,255,255,0.16);
+        }
+
+        .contact-info::after {
+            content: "";
+            width: 130px;
+            height: 130px;
+
+            border-radius: 50%;
+
+            position: absolute;
+            left: -55px;
+            bottom: -45px;
+
+            background:
+                rgba(255,255,255,0.13);
+        }
+
+        .contact-info h2 {
+            font-size: 30px;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-info > p {
+            line-height: 1.8;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 15px;
+            margin-top: 28px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .info-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 12px;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
-            padding: 60px 20px;
-        }
-
-        .contact-container {
-            width: 100%;
-            max-width: 1050px;
-
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-
-            background: white;
-
-            border-radius: 25px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.12);
-        }
-
-        /* ================= LEFT SIDE ================= */
-
-        .contact-info {
-            padding: 50px;
-
-            color: white;
-
             background:
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(255, 255, 255, 0.18),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #4f46e5,
-                    #9333ea,
-                    #ec4899
-                );
+                rgba(255,255,255,0.22);
+
+            flex-shrink: 0;
         }
 
-        .contact-info h1 {
-            font-size: 42px;
-            line-height: 1.15;
-            margin-bottom: 20px;
-        }
-
-        .contact-info > p {
-            line-height: 1.7;
-            color: #f3e8ff;
-            margin-bottom: 35px;
-        }
-
-        .info-item {
-            margin: 25px 0;
-        }
-
-        .info-item h3 {
-            margin-bottom: 7px;
+        .info-item h4 {
+            margin-bottom: 5px;
         }
 
         .info-item p {
-            color: #f3e8ff;
-            line-height: 1.5;
+            font-size: 14px;
+            opacity: 0.9;
         }
 
-        /* ================= RIGHT SIDE ================= */
+        .followup-box {
+            margin-top: 35px;
+            padding: 18px;
 
-        .contact-form {
-            padding: 50px;
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,0.17);
+
+            position: relative;
+            z-index: 2;
         }
 
-        .contact-form h2 {
-            font-size: 30px;
-            margin-bottom: 10px;
-            color: #172554;
+        .followup-box strong {
+            display: block;
+            margin-bottom: 6px;
         }
 
-        .form-intro {
-            color: #6b7280;
-            margin-bottom: 30px;
+        .followup-box p {
+            font-size: 13px;
             line-height: 1.6;
+            opacity: 0.9;
         }
 
         /* ================= FORM ================= */
+
+        .contact-form {
+            padding: 40px;
+
+            background:
+                rgba(255,255,255,0.92);
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 20px 55px
+                rgba(70, 45, 100, 0.12);
+
+            border:
+                1px solid
+                rgba(160, 110, 200, 0.10);
+        }
+
+        .contact-form h2 {
+            font-size: 27px;
+            color: #382d4e;
+            margin-bottom: 7px;
+        }
+
+        .form-description {
+            color: #81778c;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
 
         .form-group {
             margin-bottom: 20px;
@@ -183,11 +316,11 @@
 
         .form-group label {
             display: block;
-
             margin-bottom: 8px;
 
-            font-weight: bold;
-            color: #374151;
+            color: #514760;
+            font-weight: 700;
+            font-size: 14px;
         }
 
         .form-group input,
@@ -195,17 +328,19 @@
         .form-group textarea {
             width: 100%;
 
+            border: 1px solid #e1d8e9;
+
+            background: #fcfaff;
+
+            border-radius: 13px;
+
             padding: 13px 15px;
 
-            border: 1px solid #d1d5db;
-
-            border-radius: 10px;
-
-            font-size: 15px;
-
-            font-family: Arial, sans-serif;
-
             outline: none;
+
+            font-size: 14px;
+
+            color: #393142;
 
             transition: 0.3s;
         }
@@ -213,113 +348,120 @@
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #6366f1;
+            border-color: #a978d3;
 
             box-shadow:
-                0 0 0 3px rgba(99, 102, 241, 0.12);
+                0 0 0 4px
+                rgba(169,120,211,0.10);
         }
 
-        textarea {
-            min-height: 120px;
+        .form-group textarea {
+            min-height: 130px;
             resize: vertical;
         }
 
-        /* ================= BUTTON ================= */
+        .optional {
+            color: #a38fae;
+            font-size: 12px;
+            font-weight: normal;
+        }
 
         .submit-btn {
             width: 100%;
 
-            padding: 15px;
-
             border: none;
 
-            border-radius: 10px;
+            padding: 15px;
+
+            border-radius: 14px;
 
             background:
                 linear-gradient(
                     135deg,
-                    #4f46e5,
-                    #ec4899
+                    #9466d4,
+                    #dc8fc8
                 );
 
             color: white;
 
             font-size: 16px;
 
-            font-weight: bold;
+            font-weight: 800;
 
             cursor: pointer;
 
-            transition: 0.3s ease;
+            transition: 0.3s;
+
+            box-shadow:
+                0 10px 25px
+                rgba(146, 91, 190, 0.22);
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
 
             box-shadow:
-                0 10px 25px rgba(79, 70, 229, 0.25);
+                0 14px 30px
+                rgba(146, 91, 190, 0.28);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
+        .privacy-note {
+            text-align: center;
+            margin-top: 14px;
+
+            color: #968ca0;
+
+            font-size: 12px;
         }
 
-        /* ================= MOBILE ================= */
+        /* ================= RESPONSIVE ================= */
 
-        @media (max-width: 800px) {
+        @media (max-width: 850px) {
 
-            nav {
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px 5%;
+            .contact-wrapper {
+                grid-template-columns: 1fr;
             }
 
             .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
+                gap: 12px;
             }
 
-            .nav-links a {
-                padding: 8px 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 5%;
             }
 
-            .contact-container {
-                grid-template-columns: 1fr;
+            .logo {
+                font-size: 21px;
+            }
+
+            .nav-links a:not(.nav-login) {
+                display: none;
+            }
+
+            .page-header {
+                padding-top: 45px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
             }
 
             .contact-info,
             .contact-form {
-                padding: 35px 25px;
+                padding: 25px;
             }
 
-            .contact-info h1 {
-                font-size: 34px;
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
             }
+
         }
 
-        @media (max-width: 500px) {
-
-            .contact-section {
-                padding: 30px 15px;
-            }
-
-            .contact-info h1 {
-                font-size: 30px;
-            }
-
-            .contact-form h2 {
-                font-size: 25px;
-            }
-
-            .nav-links {
-                gap: 3px;
-            }
-
-            .nav-links a {
-                font-size: 12px;
-                padding: 7px 8px;
-            }
-        }
     </style>
 
 </head>
@@ -327,249 +469,389 @@
 
 <body>
 
-    <!-- ================= NAVIGATION ================= -->
 
-    <nav>
+<!-- ================= NAVBAR ================= -->
 
-        <div class="logo">
-            Website<span>Hub</span>
-        </div>
+<nav class="navbar">
 
-        <div class="nav-links">
+    <a
+        href="/"
+        class="logo"
+    >
+        WebsiteHub
+    </a>
 
-            <a href="{{ url_for('home') }}">
-                Home
-            </a>
+    <div class="nav-links">
 
-            <a href="{{ url_for('websites') }}">
-                Websites
-            </a>
+        <a href="/">
+            Home
+        </a>
 
-            <a href="{{ url_for('contact') }}" class="active">
-                Contact
-            </a>
+        <a href="/websites">
+            Websites
+        </a>
 
-        </div>
+        <a href="/#how-it-works">
+            How It Works
+        </a>
 
-    </nav>
+        <a href="/contact">
+            Contact
+        </a>
+
+        <a
+            href="/login"
+            class="nav-login"
+        >
+            Login
+        </a>
+
+    </div>
+
+</nav>
 
 
-    <!-- ================= CONTACT SECTION ================= -->
+<!-- ================= HEADER ================= -->
 
-    <section class="contact-section">
+<section class="page-header">
 
-        <div class="contact-container">
+    <span>
+        LET'S BUILD SOMETHING
+    </span>
+
+    <h1>
+        Tell Us About Your Website
+    </h1>
+
+    <p>
+        Share your requirements with us.
+        We will understand your idea and
+        help you choose or build the right
+        website for your business.
+    </p>
+
+</section>
 
 
-            <!-- ================= LEFT SIDE ================= -->
+<!-- ================= CONTACT ================= -->
 
-            <div class="contact-info">
+<section class="contact-wrapper">
 
-                <h1>
-                    Let's Build Your Website 🚀
-                </h1>
+
+    <!-- LEFT -->
+
+    <div class="contact-info">
+
+        <h2>
+            Let's Talk 👋
+        </h2>
+
+        <p>
+            Have a website idea in mind?
+            Send us your requirements and
+            we'll get back to you with the
+            next steps.
+        </p>
+
+
+        <div class="info-item">
+
+            <div class="info-icon">
+                ✉️
+            </div>
+
+            <div>
+
+                <h4>
+                    Email
+                </h4>
 
                 <p>
-                    Interested in one of our website designs?
-                    Send us your requirements and our team
-                    will get in touch with you.
+                    We'll respond as soon as possible.
                 </p>
-
-
-                <div class="info-item">
-
-                    <h3>
-                        📧 Email
-                    </h3>
-
-                    <p>
-                        hello@websitehub.com
-                    </p>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <h3>
-                        📞 Phone
-                    </h3>
-
-                    <p>
-                        +91 98765 43210
-                    </p>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <h3>
-                        ⚡ Quick Response
-                    </h3>
-
-                    <p>
-                        We'll contact you about your
-                        website requirements.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= RIGHT SIDE ================= -->
-
-            <div class="contact-form">
-
-                <h2>
-                    Request a Website
-                </h2>
-
-                <p class="form-intro">
-                    Fill in your details and tell us
-                    what kind of website you need.
-                </p>
-
-
-                <!-- ================= FORM ================= -->
-
-                <form
-                    action="{{ url_for('contact') }}"
-                    method="POST">
-
-
-                    <!-- NAME -->
-
-                    <div class="form-group">
-
-                        <label for="name">
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your name"
-                            required>
-
-                    </div>
-
-
-                    <!-- EMAIL -->
-
-                    <div class="form-group">
-
-                        <label for="email">
-                            Email Address
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            required>
-
-                    </div>
-
-
-                    <!-- PHONE -->
-
-                    <div class="form-group">
-
-                        <label for="phone">
-                            Phone Number
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            placeholder="Enter your phone number"
-                            required>
-
-                    </div>
-
-
-                    <!-- WEBSITE TYPE -->
-
-                    <div class="form-group">
-
-                        <label for="website_type">
-                            Website Type
-                        </label>
-
-                        <select
-                            id="website_type"
-                            name="website_type"
-                            required>
-
-                            <option value="">
-                                Select a website
-                            </option>
-
-                            <option value="E-commerce">
-                                E-commerce Website
-                            </option>
-
-                            <option value="Business">
-                                Business Website
-                            </option>
-
-                            <option value="Portfolio">
-                                Portfolio Website
-                            </option>
-
-                            <option value="Restaurant">
-                                Restaurant Website
-                            </option>
-
-                            <option value="Custom">
-                                Custom Website
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- REQUIREMENTS -->
-
-                    <div class="form-group">
-
-                        <label for="message">
-                            Your Requirements
-                        </label>
-
-                        <textarea
-                            id="message"
-                            name="message"
-                            placeholder="Tell us about your website requirements..."
-                            required></textarea>
-
-                    </div>
-
-
-                    <!-- SUBMIT BUTTON -->
-
-                    <button
-                        type="submit"
-                        class="submit-btn">
-
-                        Send Request 🚀
-
-                    </button>
-
-
-                </form>
 
             </div>
 
         </div>
 
-    </section>
+
+        <div class="info-item">
+
+            <div class="info-icon">
+                🌐
+            </div>
+
+            <div>
+
+                <h4>
+                    Website Solutions
+                </h4>
+
+                <p>
+                    Business, portfolio,
+                    restaurant, e-commerce
+                    and custom websites.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <div class="info-icon">
+                🚀
+            </div>
+
+            <div>
+
+                <h4>
+                    Quick Response
+                </h4>
+
+                <p>
+                    Your request is stored in
+                    our customer management system.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="followup-box">
+
+            <strong>
+                📅 Follow-up
+            </strong>
+
+            <p>
+                You can optionally select a
+                preferred follow-up date and
+                time. This will be saved in
+                our CRM dashboard.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT FORM -->
+
+    <div class="contact-form">
+
+        <h2>
+            Send Your Requirement
+        </h2>
+
+        <p class="form-description">
+            Fill in the details below.
+            Fields marked optional can be
+            left empty.
+        </p>
+
+
+        <form
+            action="/contact"
+            method="POST"
+        >
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Your phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="website_type">
+                        Website Type
+                    </label>
+
+                    <select
+                        id="website_type"
+                        name="website_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select website type
+                        </option>
+
+                        <option value="Business Website">
+                            Business Website
+                        </option>
+
+                        <option value="Portfolio Website">
+                            Portfolio Website
+                        </option>
+
+                        <option value="Restaurant Website">
+                            Restaurant Website
+                        </option>
+
+                        <option value="E-Commerce Website">
+                            E-Commerce Website
+                        </option>
+
+                        <option value="Custom Website">
+                            Custom Website
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="message">
+                    Requirements
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Tell us what kind of website you need..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- FOLLOW UP -->
+
+            <div class="form-group">
+
+                <label>
+                    Preferred Follow-up
+                    <span class="optional">
+                        (Optional)
+                    </span>
+                </label>
+
+                <div class="form-row">
+
+                    <input
+                        type="date"
+                        name="follow_up_date"
+                    >
+
+                    <input
+                        type="time"
+                        name="follow_up_time"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTES -->
+
+            <div class="form-group">
+
+                <label for="notes">
+
+                    Notes
+
+                    <span class="optional">
+                        (Optional)
+                    </span>
+
+                </label>
+
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder="Any additional information..."
+                    style="min-height:100px;"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Send Request 🚀
+            </button>
+
+
+            <p class="privacy-note">
+                Your information is securely
+                stored for customer support
+                and follow-up.
+            </p>
+
+
+        </form>
+
+    </div>
+
+</section>
+
 
 </body>
 
