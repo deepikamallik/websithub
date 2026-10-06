@@ -547,24 +547,29 @@ def contact():
 
             db = get_db_connection()
             cursor = db.cursor()
-
+            
+            created_at = datetime.now()
             cursor.execute("""
-                INSERT INTO customer_requests
-                (
-                    name,
-                    email,
-                    phone,
-                    website_type,
-                    message
-                )
-                VALUES (%s, %s, %s, %s, %s)
-            """, (
-                name,
-                email,
-                phone,
-                website_type,
-                message
-            ))
+     INSERT INTO customer_requests
+    (
+        name,
+        email,
+        phone,
+        website_type,
+        message,
+        status,
+        created_at
+    )
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+""", (
+    name,
+    email,
+    phone,
+    website_type,
+    message,
+    "Pending",
+    created_at
+))
 
             db.commit()
 
