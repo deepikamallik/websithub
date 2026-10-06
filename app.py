@@ -181,14 +181,27 @@ def dashboard():
         """)
 
         customer_requests = cursor.fetchall()
+        total_customers = len(customer_requests)
+
+        pending_count = sum(
+    1 for r in customer_requests if r[6] == "Pending"
+)
+
+        contacted_count = sum(
+    1 for r in customer_requests if r[6] == "Contacted"
+)
+
+        completed_count = sum(
+    1 for r in customer_requests if r[6] == "Completed"
+)   
 
         return render_template(
     "dashboard.html",
     requests=customer_requests,
-    total_customers=total_customers,
-    pending_count=pending_count,
-    contacted_count=contacted_count,
-    completed_count=completed_count,
+    total_customers=len(customer_requests),
+    pending_count=sum(1 for r in customer_requests if r[6] == "Pending"),
+    contacted_count=sum(1 for r in customer_requests if r[6] == "Contacted"),
+    completed_count=sum(1 for r in customer_requests if r[6] == "Completed"),
     current_datetime=datetime.now()
 )
 
