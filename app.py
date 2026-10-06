@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
+from datetime import date
 import mysql.connector
 import os
 import smtplib
@@ -181,12 +182,11 @@ def dashboard():
         """)
 
         customer_requests = cursor.fetchall()
-
         return render_template(
-            "dashboard.html",
-            requests=customer_requests
-        )
-
+    "dashboard.html",
+    requests=customer_requests,
+    current_date=date.today()
+)
     except Exception as e:
 
         print("DASHBOARD MYSQL ERROR:", e)
