@@ -8,6 +8,7 @@
     <title>Customer Dashboard | WebsiteHub</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -27,10 +28,13 @@
             height: 70px;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(120, 80, 150, 0.12);
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 0 35px;
+
             position: sticky;
             top: 0;
             z-index: 100;
@@ -89,7 +93,7 @@
             color: #777;
         }
 
-        /* STAT CARDS */
+        /* STATISTICS */
 
         .stats {
             display: grid;
@@ -102,7 +106,9 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 22px;
             border-radius: 18px;
+
             box-shadow: 0 8px 25px rgba(120, 80, 150, 0.12);
+
             border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
@@ -127,20 +133,27 @@
         .search-box input {
             width: 100%;
             padding: 14px 18px;
+
             border: none;
             outline: none;
+
             border-radius: 12px;
             background: white;
+
             box-shadow: 0 5px 18px rgba(120, 80, 150, 0.1);
+
             font-size: 15px;
         }
 
-        /* TABLE CONTAINER */
+        /* TABLE */
 
         .table-container {
             background: rgba(255, 255, 255, 0.95);
+
             border-radius: 18px;
+
             box-shadow: 0 10px 35px rgba(120, 80, 150, 0.12);
+
             overflow-x: auto;
         }
 
@@ -165,7 +178,9 @@
         td {
             padding: 15px 12px;
             border-bottom: 1px solid #eee;
+
             vertical-align: top;
+
             font-size: 14px;
         }
 
@@ -198,10 +213,14 @@
 
         .website-type {
             display: inline-block;
+
             padding: 6px 10px;
+
             border-radius: 8px;
+
             background: #f1e6f8;
             color: #75458b;
+
             font-weight: 600;
         }
 
@@ -217,8 +236,11 @@
 
         .status {
             display: inline-block;
+
             padding: 6px 12px;
+
             border-radius: 20px;
+
             font-weight: 700;
             font-size: 12px;
         }
@@ -251,8 +273,11 @@
 
         .reminder {
             display: inline-block;
+
             padding: 6px 10px;
+
             border-radius: 8px;
+
             font-size: 12px;
             font-weight: 700;
         }
@@ -279,9 +304,13 @@
 
         .notes {
             display: block;
+
             margin-top: 7px;
+
             color: #777;
+
             font-size: 12px;
+
             max-width: 180px;
         }
 
@@ -295,12 +324,19 @@
 
         .btn {
             text-decoration: none;
+
             border: none;
+
             padding: 7px 11px;
+
             border-radius: 8px;
+
             font-size: 12px;
+
             font-weight: 700;
+
             cursor: pointer;
+
             transition: 0.25s;
         }
 
@@ -328,8 +364,11 @@
 
         .empty {
             text-align: center;
+
             padding: 45px;
+
             color: #777;
+
             font-size: 16px;
         }
 
@@ -361,7 +400,9 @@
                 font-size: 26px;
             }
         }
+
     </style>
+
 </head>
 
 
@@ -404,7 +445,9 @@
 
         <div class="page-title">
 
-            <h1>Customer Dashboard</h1>
+            <h1>
+                Customer Dashboard
+            </h1>
 
             <p>
                 Manage your WebsiteHub customer requests and follow-ups.
@@ -421,7 +464,9 @@
 
             <div class="stat-card">
 
-                <h3>Total Customers</h3>
+                <h3>
+                    Total Customers
+                </h3>
 
                 <div class="number">
                     {{ requests|length }}
@@ -434,12 +479,12 @@
 
             <div class="stat-card">
 
-                <h3>Pending</h3>
+                <h3>
+                    Pending
+                </h3>
 
                 <div class="number">
-
                     {{ requests|selectattr('6', 'equalto', 'Pending')|list|length }}
-
                 </div>
 
             </div>
@@ -449,12 +494,12 @@
 
             <div class="stat-card">
 
-                <h3>Contacted</h3>
+                <h3>
+                    Contacted
+                </h3>
 
                 <div class="number">
-
                     {{ requests|selectattr('6', 'equalto', 'Contacted')|list|length }}
-
                 </div>
 
             </div>
@@ -464,12 +509,12 @@
 
             <div class="stat-card">
 
-                <h3>Completed</h3>
+                <h3>
+                    Completed
+                </h3>
 
                 <div class="number">
-
                     {{ requests|selectattr('6', 'equalto', 'Completed')|list|length }}
-
                 </div>
 
             </div>
@@ -578,9 +623,7 @@
                         <td>
 
                             <span class="website-type">
-
                                 {{ r[4] or 'N/A' }}
-
                             </span>
 
                         </td>
@@ -591,9 +634,7 @@
                         <td>
 
                             <div class="requirement">
-
                                 {{ r[5] or 'No requirement provided' }}
-
                             </div>
 
                         </td>
@@ -638,13 +679,14 @@
 
                             {% if r[9] %}
 
-                                {% if r[9].date() < current_date %}
+                                <!-- r[9] is already a DATE object -->
+                                {% if r[9] < current_date %}
 
                                     <span class="reminder overdue">
                                         🔴 Overdue
                                     </span>
 
-                                {% elif r[9].date() == current_date %}
+                                {% elif r[9] == current_date %}
 
                                     <span class="reminder today">
                                         🟡 Today
@@ -653,21 +695,18 @@
                                 {% else %}
 
                                     <span class="reminder upcoming">
-
-                                        🟢
-                                        {{ r[9].strftime('%d-%m-%Y %I:%M %p') }}
-
+                                        🟢 {{ r[9].strftime('%d-%m-%Y') }}
                                     </span>
 
                                 {% endif %}
 
 
+                                <!-- NOTES -->
+
                                 {% if r[8] %}
 
                                     <span class="notes">
-
                                         📝 {{ r[8] }}
-
                                     </span>
 
                                 {% endif %}
@@ -745,11 +784,14 @@
 
             </table>
 
+
             {% else %}
 
                 <div class="empty">
 
-                    <h3>No customer requests yet</h3>
+                    <h3>
+                        No customer requests yet
+                    </h3>
 
                     <p>
                         Customer requests will appear here when someone submits the form.
@@ -768,9 +810,11 @@
 
     <script>
 
-        const searchInput = document.getElementById("searchInput");
+        const searchInput =
+            document.getElementById("searchInput");
 
-        const table = document.getElementById("customerTable");
+        const table =
+            document.getElementById("customerTable");
 
 
         if (searchInput && table) {
